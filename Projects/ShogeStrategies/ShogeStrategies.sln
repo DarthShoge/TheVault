@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TesterApp", "TesterApp\TesterApp.fsproj", "{3E4705E1-AA12-4B37-BFC3-FCC53B4C7B50}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShogeStrategies.Lab", "ShogeStrategies.Lab\ShogeStrategies.Lab.fsproj", "{FAB262DF-5ABB-4A31-BE9E-75DDE9A2CBB0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnstableDLLs", "UnstableDLLs", "{DE990EA9-80E0-4EFC-8069-DA695E04549E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6A8CAC02-9FDB-4241-8791-79B77C219D22}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShogeStrategies.UI", "ShogeStrategies.UI\ShogeStrategies.UI.csproj", "{66349DBB-A6A6-4622-B411-0AD627569CA2}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShogeStrategies.API", "ShogeStrategiesAPI\ShogeStrategies.API.fsproj", "{4A816852-F246-4D09-91B1-C20A644F2E3C}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShogeStrategies.Engine", "ShogeStrategies.Engine\ShogeStrategies.Engine.fsproj", "{16D0AD58-C57E-4CDC-B0EE-50D4C639AFBC}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShogeStrategies.Engine.Tests", "ShogeStrategies.Engine.Tests\ShogeStrategies.Engine.Tests.fsproj", "{E432546F-116F-466B-95AA-B890441D9C67}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E4705E1-AA12-4B37-BFC3-FCC53B4C7B50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E4705E1-AA12-4B37-BFC3-FCC53B4C7B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E4705E1-AA12-4B37-BFC3-FCC53B4C7B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E4705E1-AA12-4B37-BFC3-FCC53B4C7B50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAB262DF-5ABB-4A31-BE9E-75DDE9A2CBB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAB262DF-5ABB-4A31-BE9E-75DDE9A2CBB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAB262DF-5ABB-4A31-BE9E-75DDE9A2CBB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAB262DF-5ABB-4A31-BE9E-75DDE9A2CBB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66349DBB-A6A6-4622-B411-0AD627569CA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66349DBB-A6A6-4622-B411-0AD627569CA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66349DBB-A6A6-4622-B411-0AD627569CA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66349DBB-A6A6-4622-B411-0AD627569CA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A816852-F246-4D09-91B1-C20A644F2E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A816852-F246-4D09-91B1-C20A644F2E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A816852-F246-4D09-91B1-C20A644F2E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A816852-F246-4D09-91B1-C20A644F2E3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16D0AD58-C57E-4CDC-B0EE-50D4C639AFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16D0AD58-C57E-4CDC-B0EE-50D4C639AFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16D0AD58-C57E-4CDC-B0EE-50D4C639AFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16D0AD58-C57E-4CDC-B0EE-50D4C639AFBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E432546F-116F-466B-95AA-B890441D9C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E432546F-116F-466B-95AA-B890441D9C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E432546F-116F-466B-95AA-B890441D9C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E432546F-116F-466B-95AA-B890441D9C67}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

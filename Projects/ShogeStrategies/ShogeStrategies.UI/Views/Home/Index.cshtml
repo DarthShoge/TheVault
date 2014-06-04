@@ -1,0 +1,36 @@
+﻿
+@{
+    Layout = String.Empty;
+}
+<!DOCTYPE html>
+<html lang="en" ng-app="tradingApp">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    @Styles.Render("~/Content/mobileCss", "~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div ng-controller="SimpleGraphController">
+        <h2 ng-bind="graphData.symbol"></h2><br />
+        {{graphData.dailyHi}}<br />
+        {{graphData.dailyLo}}
+        
+        <ul>
+            <li ng-repeat="dailyValue in graphData.dailyValues">
+                <span>
+                    {{dailyValue.start | date:'medium'}}
+                     {{dailyValue.value}}
+                </span>
+            </li>
+        </ul>
+    </div>
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/app/js/app.js"></script>
+    <script src="~/app/controllers/simpleGraphController.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    
+        @Scripts.Render("~/bundles/jquerymobile")
+</body>
+</html>
