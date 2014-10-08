@@ -4,3 +4,4 @@
 
         type Artist = {Name:string}
 
+        type SoundCloudArtist = {Id: int; Name:string;FollowerCount: int; FollowingCount: int}
