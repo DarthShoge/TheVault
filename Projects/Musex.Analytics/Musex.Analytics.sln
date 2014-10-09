@@ -7,6 +7,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Musex.Analytics", "Musex.An
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Musex.Lab", "Musex.Lab\Musex.Lab.fsproj", "{B6AB90D8-FB62-455F-9531-ACC6BB81F3A6}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Muszex.Analytics.Test", "Muszex.Analytics.Test\Muszex.Analytics.Test.fsproj", "{F2DAA97D-9D40-47D5-AE2A-C0C2CEDE2534}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B6AB90D8-FB62-455F-9531-ACC6BB81F3A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6AB90D8-FB62-455F-9531-ACC6BB81F3A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6AB90D8-FB62-455F-9531-ACC6BB81F3A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2DAA97D-9D40-47D5-AE2A-C0C2CEDE2534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2DAA97D-9D40-47D5-AE2A-C0C2CEDE2534}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2DAA97D-9D40-47D5-AE2A-C0C2CEDE2534}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2DAA97D-9D40-47D5-AE2A-C0C2CEDE2534}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

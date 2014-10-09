@@ -10,5 +10,5 @@ let main argv =
 //    let links = art.Value.``Web Link(s)`` |> Seq.map(fun x -> (x.URL,x.Title)) |> Seq.toArray
     let twits = Twitter.getArtistTwitterFollowers "Asa_official"
     let allRecs = ArtistProvider.getSimilarArtists "Key Wane"
-    let hbk = Soundcloud.getArtistProfiles "IAMNOBODI"
+    let hbk = Soundcloud.getArtistProfiles "Childish Gambino"
     0 // return an integer exit code
