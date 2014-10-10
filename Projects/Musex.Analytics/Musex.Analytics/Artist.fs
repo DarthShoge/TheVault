@@ -1,6 +1,6 @@
-﻿namespace Musex.Analytics
+﻿namespace Muszex.Analytics
 open FSharp.Data
-open Musex.Analytics.DataStructures
+open Muszex.Analytics.DataStructures
 open System.Text.RegularExpressions
 
 module Soundcloud =

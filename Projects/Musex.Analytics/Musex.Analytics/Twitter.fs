@@ -1,4 +1,4 @@
-﻿namespace Musex.Analytics
+﻿namespace Muszex.Analytics
 open FSharp.Data
 open FSharp.Data.Toolbox
 

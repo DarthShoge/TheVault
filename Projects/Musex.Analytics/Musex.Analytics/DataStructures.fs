@@ -1,4 +1,4 @@
-﻿namespace Musex.Analytics
+﻿namespace Muszex.Analytics
     module DataStructures =
         type ApiConfig = {Key: string; Secret: string}
 

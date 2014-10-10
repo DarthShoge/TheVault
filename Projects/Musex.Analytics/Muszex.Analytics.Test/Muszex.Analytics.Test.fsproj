@@ -63,14 +63,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library1.fs" />
+    <Compile Include="ExtracterTests.fs" />
     <None Include="Script.fsx" />
     <None Include="packages.config" />
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Musex.Analytics\Musex.Analytics.fsproj">
-      <Name>Musex.Analytics</Name>
+    <ProjectReference Include="..\Musex.Analytics\Muszex.Analytics.fsproj">
+      <Name>Muszex.Analytics</Name>
       <Project>{39e50206-2130-4a3f-81d1-f8e343bf36da}</Project>
       <Private>True</Private>
     </ProjectReference>

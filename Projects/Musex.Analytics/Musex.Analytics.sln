@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Musex.Analytics", "Musex.Analytics\Musex.Analytics.fsproj", "{39E50206-2130-4A3F-81D1-F8E343BF36DA}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Muszex.Analytics", "Musex.Analytics\Muszex.Analytics.fsproj", "{39E50206-2130-4A3F-81D1-F8E343BF36DA}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Musex.Lab", "Musex.Lab\Musex.Lab.fsproj", "{B6AB90D8-FB62-455F-9531-ACC6BB81F3A6}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Muszex.Lab", "Musex.Lab\Muszex.Lab.fsproj", "{B6AB90D8-FB62-455F-9531-ACC6BB81F3A6}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Muszex.Analytics.Test", "Muszex.Analytics.Test\Muszex.Analytics.Test.fsproj", "{F2DAA97D-9D40-47D5-AE2A-C0C2CEDE2534}"
 EndProject

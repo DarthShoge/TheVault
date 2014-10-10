@@ -1,7 +1,7 @@
 ﻿namespace Muszex.Analytics.Test
 open NUnit.Framework
 open FsUnit
-open Musex.Analytics.DataStructures
+open Muszex.Analytics.DataStructures
 
 type ProviderFactory() =  
     let (|Youtube|Unmapped|) (link : string) =
@@ -30,5 +30,4 @@ type ``given I want to try extract data``() =
         let providerResponse = factory.GetProvider(link)()
         //then
         Assert.AreEqual(providerResponse.Provider,"Unmapped")
-//        providerResponse.Provider |> should equal "Unmapped"
          
