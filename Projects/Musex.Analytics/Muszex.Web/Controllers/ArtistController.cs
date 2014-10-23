@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Ajax;
+using System.Web.Mvc.Html;
 using Muszex.Repositories;
 
 namespace Muszex.Web.Controllers
@@ -29,7 +31,8 @@ namespace Muszex.Web.Controllers
             if (result == null)
                 return RedirectToAction("NotFound");
 
-            return View();
+
+            return View("Id",result);
         }
 
         public ActionResult NotFound()

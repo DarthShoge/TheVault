@@ -52,7 +52,7 @@ module ArtistProvider =
                                 name
 
         let loader = similarArtistProvider.Load(query)
-        [1..5] |> Seq.map(fun x -> {Name="Foo";SocialLinks=[];FundPhotoLink="";Genre=HipHop;Locale={Country="UK";Address=""}})
+        [1..5] |> Seq.map(fun x -> {Name="Foo";SocialLinks=[];FundPhotoLink="";Genre=Genre.HipHop;Locale={Country="UK";Address=""}})
 //        loader.Response.Artists |> Seq.map(fun x -> {Name= x.Name})
 
     let allArtists =  
