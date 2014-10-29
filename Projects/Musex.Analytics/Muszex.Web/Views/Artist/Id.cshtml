@@ -6,37 +6,57 @@
 
 <!DOCTYPE html>
 
-<html ng-app>
-    <head>
-        <link href="~/Content/Artist.css" rel="stylesheet" />
-        <title>title</title>
-        <script src="~/Scripts/angular.js"></script>
-        <script src="~/Scripts/bootstrap.min.js"></script>
-        <script src="~/app/artist/artistController.js"></script>
-        <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
-        <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    </head>
+<html ng-app="artistApp">
+<head>
+    <link href="~/Content/Artist.css" rel="stylesheet" />
+    <title>title</title>
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/app/app.js"></script>
+    <script src="~/app/artist/artistController.js"></script>
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <style>
+        .genList {
+            list-style: none;
+            list-style-type: none;
+            display: inline;
+        }
+    </style>
+
+</head>
 <body>
     <video autoplay loop poster="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/polina.jpg" id="bgvid">
         <source src="~/Content/videos/polina.mp4" type="video/mp4">
     </video>
-    <div ng-controller="artistController" id="polina" class="container">
-        @*<h1>{{artist.name}}</h1>
-        <p>filmed by Alexander Wagner 2011
-        <p><a href="/blog/777/Create-Fullscreen-HTML5-Page-Background-Video">return to article</a>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur porta dictum turpis, eu mollis justo gravida ac. Proin non eros blandit, rutrum est a, cursus quam. Nam ultricies, velit ac suscipit vehicula, turpis eros sollicitudin lacus, at convallis mauris magna non justo. Etiam et suscipit elit. Morbi eu ornare nulla, sit amet ornare est. Sed vehicula ipsum a mattis dapibus. Etiam volutpat vel enim at auctor.
-        <p>Aenean pharetra convallis pellentesque. Vestibulum et metus lectus. Nunc consectetur, ipsum in viverra eleifend, erat erat ultricies felis, at ultricies mi massa eu ligula. Suspendisse in justo dapibus metus sollicitudin ultrices id sed nisl.</p>
-        <button>Pause</button>*@
-        <div class="col-lg-3 col-md-3 col-sm-12" style="background:red">&nbsp;</div>
-        <div class="col-lg-7">  
-            <h1>{{artist.name}} </h1>
-            <h3>Band Name</h3>         
-        </div>
 
-    </div>
-    <script>
-        var video = document.getElementById("bgvid"), pauseButton = document.querySelector("#polina button"); function vidFade() { video.classList.add("stopfade"); }
-        video.addEventListener('ended', function ()
-        { video.pause(); vidFade(); }, false); pauseButton.addEventListener("click", function () { video.classList.toggle("stopfade"); if (video.paused) { video.play(); pauseButton.innerHTML = "Pause"; } else { video.pause(); pauseButton.innerHTML = "Paused"; } }, false); video.addEventListener('touchstart', function (e) { e.preventDefault(); video.play(); })</script>
+    <div ng-controller="artistController">
+        @*<h1>{{artist.name}}</h1>
+            <p>filmed by Alexander Wagner 2011
+            <p><a href="/blog/777/Create-Fullscreen-HTML5-Page-Background-Video">return to article</a>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur porta dictum turpis, eu mollis justo gravida ac. Proin non eros blandit, rutrum est a, cursus quam. Nam ultricies, velit ac suscipit vehicula, turpis eros sollicitudin lacus, at convallis mauris magna non justo. Etiam et suscipit elit. Morbi eu ornare nulla, sit amet ornare est. Sed vehicula ipsum a mattis dapibus. Etiam volutpat vel enim at auctor.
+            <p>Aenean pharetra convallis pellentesque. Vestibulum et metus lectus. Nunc consectetur, ipsum in viverra eleifend, erat erat ultricies felis, at ultricies mi massa eu ligula. Suspendisse in justo dapibus metus sollicitudin ultrices id sed nisl.</p>
+            <button>Pause</button>*@
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1" style="background:red">&nbsp;</div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-11">
+                <h1>{{artist.name}} </h1>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1">&nbsp;</div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-11">
+                <p>{{artist.locale}}</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5">
+                <p style="display:inline" ng-repeat="genre in artist.genres">{{genre.name + ', '}}</p>
+            </div>
+
+        </div>
+        <script>
+            var video = document.getElementById("bgvid"), pauseButton = document.querySelector("#polina button"); function vidFade() { video.classList.add("stopfade"); }
+            video.addEventListener('ended', function ()
+            { video.pause(); vidFade(); }, false); pauseButton.addEventListener("click", function () { video.classList.toggle("stopfade"); if (video.paused) { video.play(); pauseButton.innerHTML = "Pause"; } else { video.pause(); pauseButton.innerHTML = "Paused"; } }, false); video.addEventListener('touchstart', function (e) { e.preventDefault(); video.play(); })</script>
 </body>
 </html>

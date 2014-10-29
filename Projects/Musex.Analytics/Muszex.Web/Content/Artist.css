@@ -31,6 +31,10 @@ h1 {
     font-size:3rem;text-transform:uppercase;margin-top:0;letter-spacing:.3rem
 }
 
+.tester{
+    background-color:lightcoral;
+}
+
 a {
     display:inline-block;color:#fff;text-decoration:none;background:rgba(0,0,0,.5);padding:.5rem;-webkit-transition:.6s background;transition:.6s background
 }
