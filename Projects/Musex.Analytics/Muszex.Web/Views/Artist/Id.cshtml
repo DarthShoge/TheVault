@@ -11,52 +11,112 @@
     <link href="~/Content/Artist.css" rel="stylesheet" />
     <title>title</title>
     <script src="~/Scripts/angular.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/app/app.js"></script>
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/app/artist/artistController.js"></script>
-    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <style>
-        .genList {
-            list-style: none;
-            list-style-type: none;
-            display: inline;
+        .rounded button {
+            border-radius: 10px;
+            margin: 5px;
+            width: 90%;
         }
+
+        .bg {
+            background: #000000;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .white-text  {
+            color: white;
+        }
+
+        .stack-horizontal {
+            display: inline;
+            margin-left: 0;
+            padding-left: 0;
+        }
+
     </style>
 
 </head>
-<body>
+<body class="bg ">
     <video autoplay loop poster="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/polina.jpg" id="bgvid">
         <source src="~/Content/videos/polina.mp4" type="video/mp4">
     </video>
 
     <div ng-controller="artistController">
-        @*<h1>{{artist.name}}</h1>
-            <p>filmed by Alexander Wagner 2011
-            <p><a href="/blog/777/Create-Fullscreen-HTML5-Page-Background-Video">return to article</a>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur porta dictum turpis, eu mollis justo gravida ac. Proin non eros blandit, rutrum est a, cursus quam. Nam ultricies, velit ac suscipit vehicula, turpis eros sollicitudin lacus, at convallis mauris magna non justo. Etiam et suscipit elit. Morbi eu ornare nulla, sit amet ornare est. Sed vehicula ipsum a mattis dapibus. Etiam volutpat vel enim at auctor.
-            <p>Aenean pharetra convallis pellentesque. Vestibulum et metus lectus. Nunc consectetur, ipsum in viverra eleifend, erat erat ultricies felis, at ultricies mi massa eu ligula. Suspendisse in justo dapibus metus sollicitudin ultrices id sed nisl.</p>
-            <button>Pause</button>*@
         <div class="row">
             <div class="col-lg-1 col-md-1 col-sm-1" style="background:red">&nbsp;</div>
             <div class="col-lg-2 col-md-2 col-sm-4 col-xs-11">
-                <h1>{{artist.name}} </h1>
+                <h1 class="white-text">{{artist.name}} </h1>
+            </div>
+            <div class="col-lg-7 col-md-4">
+
+            </div>
+
+            <div class="col-lg-2 col-md-4 rounded">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button class="btn-success ">
+                            <h2>BUY</h2>
+                            <p>at £100</p>
+                        </button>
+                    </div>
+                    <div class="col-lg-6">
+                        <button class="btn-danger ">
+                            <h2>SELL</h2>
+                            <p>at £102</p>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <progressbar style="margin-top: 5px;" class="progress-striped active" max="100" value="funding.currentPrc" type="{{funding.level()}}"><i>progress : {{funding.currentPrc}}%</i></progressbar>
+                </div>
             </div>
 
         </div>
         <div class="row">
             <div class="col-lg-1 col-md-1 col-sm-1">&nbsp;</div>
             <div class="col-lg-2 col-md-2 col-sm-4 col-xs-11">
-                <p>{{artist.locale}}</p>
+                <p class="white-text">{{artist.locale}}</p>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5">
-                <p style="display:inline" ng-repeat="genre in artist.genres">{{genre.name + ', '}}</p>
+                <p class="white-text stack-horizontal" ng-repeat="genre in artist.genres">{{genre.name + ', '}}</p>
+            </div>
+            <div class="col-lg-5 col-md-5">&nbsp;</div>
+            <div class="col-lg-2 col-md-2">
+                <h3 class="white-text text-center`" style="margin:0px">{{funding.daysLeft}} days left</h3>
             </div>
 
+        </div>
+        <div style="background: #000000; background: rgba(255,255,255,0.2)" class="row">
+            <div class="col-lg-1 col-md-1">&nbsp;</div>
+            <div class="col-lg-6 col-md-6">
+                <ul style="margin-left: -40px" >
+                    <li class="stack-horizontal"><img src="~/Content/images/social/facebook-Icon.png" /></li>
+                    <li class="stack-horizontal"><img src="~/Content/images/social/Soundcloud-Icon.png" /></li>
+                    <li class="stack-horizontal"><img src="~/Content/images/social/Lastfm-Icon.png" /></li>
+                    <li class="stack-horizontal"><img src="~/Content/images/social/Twitter-Icon.png" /></li>
+                    <li class="stack-horizontal"><img src="~/Content/images/social/Vimeo-Icon.png" /></li>
+                    <li class="stack-horizontal"><img src="~/Content/images/social/Youtube-Icon.png" /></li>
+                </ul>
+            </div>
         </div>
         <script>
             var video = document.getElementById("bgvid"), pauseButton = document.querySelector("#polina button"); function vidFade() { video.classList.add("stopfade"); }
             video.addEventListener('ended', function ()
-            { video.pause(); vidFade(); }, false); pauseButton.addEventListener("click", function () { video.classList.toggle("stopfade"); if (video.paused) { video.play(); pauseButton.innerHTML = "Pause"; } else { video.pause(); pauseButton.innerHTML = "Paused"; } }, false); video.addEventListener('touchstart', function (e) { e.preventDefault(); video.play(); })</script>
+            { video.pause(); vidFade(); }, false);
+            //pauseButton.addEventListener("click", function () {
+            //    video.classList.toggle("stopfade"); if (video.paused) { video.play(); pauseButton.innerHTML = "Pause"; } else { video.pause(); pauseButton.innerHTML = "Paused"; }
+            //}, false);
+            //video.addEventListener('touchstart', function (e) {
+            //    e.preventDefault(); video.play();
+            //})
+
+        </script>
+    </div>
 </body>
 </html>
