@@ -1,4 +1,4 @@
-﻿@model Muszex.Analytics.DataStructures.Artist
+﻿@model IHtmlString
 
 @{
     Layout = null;
@@ -15,13 +15,14 @@
     <script src="~/Scripts/jquery-1.9.1.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/app/services/artistData.js"></script>
     <script src="~/app/artist/artistController.js"></script>
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <style>
         .rounded button {
             border-radius: 10px;
             margin: 5px;
-            width: 90%;
+            width: 100%;
         }
 
         .bg {
@@ -39,33 +40,63 @@
             padding-left: 0;
         }
 
+        .no-gutter {
+            margin: 0px;
+            padding: 0px;
+        }
+
     </style>
+    
+    <script> 
+        angular.module("artistApp").value("artistInit", @Html.Raw(Model));
+    </script>
 
 </head>
-<body class="bg ">
+<body style="background: rgba(0,0,0,0)">
     <video autoplay loop poster="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/polina.jpg" id="bgvid">
         <source src="~/Content/videos/polina.mp4" type="video/mp4">
     </video>
 
     <div ng-controller="artistController">
-        <div class="row">
+        <div class="navbar navbar-inverse no-gutter" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" style="color: red">MUSZEX</a>
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <ul class="dropdown-menu">
+                        <li><a href="/#/Home">Home</a></li>
+                    </ul>
+                </button>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#/Home">Home</a> </li>
+                        <li><a href="#/Portfolio">Portfolio</a> </li>
+                        <li><a href="#/Home">Statistics</a> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row bg">
             <div class="col-lg-1 col-md-1 col-sm-1" style="background:red">&nbsp;</div>
-            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-11">
+            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-11">
                 <h1 class="white-text">{{artist.name}} </h1>
             </div>
             <div class="col-lg-7 col-md-4">
 
             </div>
 
-            <div class="col-lg-2 col-md-4 rounded">
+            <div class="col-lg-2 col-md-4 col-sm-8 col-xs-12 rounded" >
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-sm-6 col-xs-6">
                         <button class="btn-success ">
                             <h2>BUY</h2>
                             <p>at £100</p>
                         </button>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-sm-6 col-xs-6">
                         <button class="btn-danger ">
                             <h2>SELL</h2>
                             <p>at £102</p>
@@ -78,13 +109,13 @@
             </div>
 
         </div>
-        <div class="row">
+        <div class="row bg">
             <div class="col-lg-1 col-md-1 col-sm-1">&nbsp;</div>
             <div class="col-lg-2 col-md-2 col-sm-4 col-xs-11">
-                <p class="white-text">{{artist.locale}}</p>
+                <p class="white-text">{{artist.locale.address + ", " + artist.locale.country}}</p>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5">
-                <p class="white-text stack-horizontal" ng-repeat="genre in artist.genres">{{genre.name + ', '}}</p>
+                <p class="white-text stack-horizontal" ng-repeat="genre in artist.genres">{{genre + ', '}}</p>
             </div>
             <div class="col-lg-5 col-md-5">&nbsp;</div>
             <div class="col-lg-2 col-md-2">
@@ -92,23 +123,26 @@
             </div>
 
         </div>
-        <div style="background: #000000; background: rgba(255,255,255,0.2)" class="row">
+        <div class="row">
             <div class="col-lg-1 col-md-1">&nbsp;</div>
             <div class="col-lg-6 col-md-6">
-                <ul style="margin-left: -40px" >
-                    <li class="stack-horizontal"><img src="~/Content/images/social/facebook-Icon.png" /></li>
-                    <li class="stack-horizontal"><img src="~/Content/images/social/Soundcloud-Icon.png" /></li>
-                    <li class="stack-horizontal"><img src="~/Content/images/social/Lastfm-Icon.png" /></li>
-                    <li class="stack-horizontal"><img src="~/Content/images/social/Twitter-Icon.png" /></li>
-                    <li class="stack-horizontal"><img src="~/Content/images/social/Vimeo-Icon.png" /></li>
-                    <li class="stack-horizontal"><img src="~/Content/images/social/Youtube-Icon.png" /></li>
+                <ul style="margin-left: -50px; margin-top: 20px" >
+                    <li class="stack-horizontal"><img src="~/Content/images/social/fb.png" /></li>
+                    <li class="stack-horizontal"><img src="~/Content/images/social/Soundcloud.png" /></li>
+                    <li class="stack-horizontal"><img src="~/Content/images/social/Twitter.png" /></li>
+                    <li class="stack-horizontal"><img src="~/Content/images/social/Lastfm.png" /></li>
+                    <li class="stack-horizontal"><img src="~/Content/images/social/Vimeo.png" /></li>
+                    <li class="stack-horizontal"><img src="~/Content/images/social/Youtube.png" /></li>
                 </ul>
             </div>
         </div>
         <script>
-            var video = document.getElementById("bgvid"), pauseButton = document.querySelector("#polina button"); function vidFade() { video.classList.add("stopfade"); }
-            video.addEventListener('ended', function ()
-            { video.pause(); vidFade(); }, false);
+            var video = document.getElementById("bgvid");
+            pauseButton = document.querySelector("#polina button");
+            function vidFade() { video.classList.add("stopfade"); }
+            video.addEventListener('ended', function() {
+                video.pause(); vidFade();
+            }, false);
             //pauseButton.addEventListener("click", function () {
             //    video.classList.toggle("stopfade"); if (video.paused) { video.play(); pauseButton.innerHTML = "Pause"; } else { video.pause(); pauseButton.innerHTML = "Paused"; }
             //}, false);

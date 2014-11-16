@@ -2,10 +2,9 @@
 'use strict';
 
 (function () {
-    var app = angular.module("artistApp", ['ui.bootstrap']);
 
 
-    var artistController = function ($scope) {
+    var artistController = function ($scope, artistData, artistInit) {
         var artist = {
             name: "Bamboo Razack",
             locale: "London, UK",
@@ -16,6 +15,10 @@
 
         };
 
+        //artistData.getArtistData(1).then(
+        //    function(d) { data = d; },
+        //    function(sc) {}
+        //);
 
         $scope.funding = {
             state: "unfunded",
@@ -32,9 +35,9 @@
         };
 
 
-       
-        $scope.artist = artist;
+        
+        $scope.artist = artistInit.artist;
     };
 
-    app.controller("artistController", ["$scope", artistController]);
+    app.controller("artistController", ["$scope", 'artistData', 'artistInit', artistController]);
 }())

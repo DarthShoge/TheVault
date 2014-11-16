@@ -33,7 +33,8 @@ namespace Muszex.Web.Tests
         {
             //arrange
             var queryRepository = new MockArtistQueryRepository();
-            queryRepository.NextArtist = new Artist("Micheal Jackson", new List<SocialLink>(),"",new Locale("USA","Motown"),Genre.Pop);
+            var genres = new List<Genre> {Genre.RnB};
+            queryRepository.NextArtist = new ArtistBundle(new Artist(1,"Micheal Jackson", new List<SocialLink>(), new Locale("USA", "Motown"), genres), null);
             var controller = new ArtistController(queryRepository);
             //act
             var result = controller.Id(100) as ViewResult;
@@ -44,12 +45,12 @@ namespace Muszex.Web.Tests
 
         private class MockArtistQueryRepository : IArtistQueryRepository
         {
-            public Artist GetArtist(int id)
+            public ArtistBundle GetArtist(int id)
             {
                 return NextArtist;
             }
 
-            public Artist NextArtist { get; set; }
+            public ArtistBundle NextArtist { get; set; }
 
         }
     }

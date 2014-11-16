@@ -1,0 +1,20 @@
+{
+  "name": "Muszex.Web",
+  "version": "0.0.0",
+  "keywords": [
+    "music",
+    "finance"
+  ],
+  "authors": [
+    "Lukman Shoge"
+  ],
+  "license": "MIT",
+  "homepage": "Muszex.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

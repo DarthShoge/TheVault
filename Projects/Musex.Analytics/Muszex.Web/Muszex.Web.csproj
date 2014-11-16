@@ -165,12 +165,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="fonts\Helpers\EnvironmentConfig.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\app.js" />
     <Content Include="app\artist\artistController.js" />
+    <Content Include="app\services\artistData.js" />
     <Content Include="Content\Artist.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -181,12 +183,15 @@
     <Content Include="Content\images\icons-18-white.png" />
     <Content Include="Content\images\icons-36-black.png" />
     <Content Include="Content\images\icons-36-white.png" />
-    <Content Include="Content\images\social\facebook-Icon.png" />
-    <Content Include="Content\images\social\Lastfm-Icon.png" />
-    <Content Include="Content\images\social\Soundcloud-Icon.png" />
-    <Content Include="Content\images\social\Twitter-Icon.png" />
-    <Content Include="Content\images\social\Vimeo-Icon.png" />
-    <Content Include="Content\images\social\Youtube-Icon.png" />
+    <Content Include="Content\images\social\email.png" />
+    <Content Include="Content\images\social\fb.png" />
+    <Content Include="Content\images\social\lastfm.png" />
+    <Content Include="Content\images\social\music.png" />
+    <Content Include="Content\images\social\soundcloud.png" />
+    <Content Include="Content\images\social\spotifiy.png" />
+    <Content Include="Content\images\social\twitter.png" />
+    <Content Include="Content\images\social\vimeo.png" />
+    <Content Include="Content\images\social\youtube.png" />
     <Content Include="Content\jquery.mobile-1.2.0.css" />
     <Content Include="Content\jquery.mobile-1.2.0.min.css" />
     <Content Include="Content\jquery.mobile.structure-1.2.0.css" />
@@ -247,6 +252,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\videos\imom2.mp4" />
     <Content Include="Content\videos\polina.mp4" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -288,6 +294,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include=".bin\bower.cmd" />
+    <None Include=".bin\git.cmd" />
+    <None Include=".bin\node.cmd" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
@@ -1036,6 +1045,16 @@
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\ui-bootstrap-tpls-0.11.2.js" />
+    <Content Include="Scripts\videogular\buffering.js" />
+    <Content Include="Scripts\videogular\buffering.min.js" />
+    <Content Include="Scripts\videogular\controls.js" />
+    <Content Include="Scripts\videogular\controls.min.js" />
+    <Content Include="Scripts\videogular\overlay-play.js" />
+    <Content Include="Scripts\videogular\overlay-play.min.js" />
+    <Content Include="Scripts\videogular\poster.js" />
+    <Content Include="Scripts\videogular\poster.min.js" />
+    <Content Include="Scripts\videogular\videogular.js" />
+    <Content Include="Scripts\videogular\videogular.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
