@@ -179,6 +179,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\ajax-loader.gif" />
+    <Content Include="Content\images\artists\imom.jpg" />
     <Content Include="Content\images\icons-18-black.png" />
     <Content Include="Content\images\icons-18-white.png" />
     <Content Include="Content\images\icons-36-black.png" />
@@ -252,6 +253,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\videos\dojacat.mp4" />
     <Content Include="Content\videos\imom2.mp4" />
     <Content Include="Content\videos\polina.mp4" />
     <Content Include="favicon.ico" />
@@ -1044,6 +1046,21 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Bootstrap.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Buffer.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Controls.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Feedback.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\FullScreen.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Messages.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Meta.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\ng-video.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\PlaybackRate.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Playlist.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Screen.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Seekable.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Service.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Timeline.js" />
+    <Content Include="Scripts\ThirdParty\ngVideo\Volume.js" />
     <Content Include="Scripts\ui-bootstrap-tpls-0.11.2.js" />
     <Content Include="Scripts\videogular\buffering.js" />
     <Content Include="Scripts\videogular\buffering.min.js" />
@@ -1084,6 +1101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\ThirdParty\videogular\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

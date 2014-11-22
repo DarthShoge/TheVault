@@ -12,7 +12,6 @@ video {
     min-height:100%;
     width:auto;
     height:auto;z-index:-100;
-    background:url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/polina.jpg) no-repeat;
     background-size:cover;
     -webkit-transition:1s opacity;
     transition:1s opacity

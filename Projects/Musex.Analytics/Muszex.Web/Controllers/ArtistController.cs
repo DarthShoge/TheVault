@@ -28,14 +28,14 @@ namespace Muszex.Web.Controllers
             return View();
         }
 
-        public ActionResult Id(int id = 0)
+        public ActionResult Id(int id = 1)
         {
             var result = _artistQueryRepository.GetArtist(id);
 
             if (result == null)
                 return View("NotFound");
             IHtmlString serializeObject = SerializeObject(result);
-            return View("Id", serializeObject);
+            return View("Id", new ArtistModel(serializeObject,result.Media));
         }
 
         [HttpPost]
@@ -90,5 +90,16 @@ namespace Muszex.Web.Controllers
                 base.WriteJson(writer, value, serializer);
             }
         }
+    }
+
+    public class ArtistModel
+    {
+        public ArtistModel(IHtmlString jsonRep, ArtistMedia vidPath)
+        {
+            ArtistJSon = jsonRep;
+            MediaPath = vidPath;
+        }
+        public IHtmlString ArtistJSon { get; set; }
+        public ArtistMedia MediaPath { get; set; }
     }
 }

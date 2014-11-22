@@ -1,4 +1,4 @@
-﻿@model IHtmlString
+﻿@model Muszex.Web.Controllers.ArtistModel
 
 @{
     Layout = null;
@@ -48,13 +48,13 @@
     </style>
     
     <script> 
-        angular.module("artistApp").value("artistInit", @Html.Raw(Model));
+        angular.module("artistApp").value("artistInit", @Html.Raw(Model.ArtistJSon));
     </script>
 
 </head>
 <body style="background: rgba(0,0,0,0)">
-    <video autoplay loop poster="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/polina.jpg" id="bgvid">
-        <source src="~/Content/videos/polina.mp4" type="video/mp4">
+    <video style="background: @Model.MediaPath.PictureLink" autoplay loop poster="@Model.MediaPath.PictureLink" id="bgvid">
+        <source src="@Model.MediaPath.VideoLink" type="video/mp4">
     </video>
 
     <div ng-controller="artistController">
