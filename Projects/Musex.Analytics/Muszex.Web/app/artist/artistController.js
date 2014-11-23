@@ -4,7 +4,7 @@
 (function () {
 
 
-    var artistController = function ($scope, artistData, artistInit) {
+    var artistController = function ($scope, artistData, artistInit,$log) {
         var artist = {
             name: "Bamboo Razack",
             locale: "London, UK",
@@ -19,6 +19,10 @@
         //    function(d) { data = d; },
         //    function(sc) {}
         //);
+
+        $scope.alertReady = function() {
+            $log.warn("Up an running cap'n");
+        };
 
         $scope.funding = {
             state: "unfunded",
@@ -37,7 +41,9 @@
 
         
         $scope.artist = artistInit.artist;
+        $scope.currentSong = artistInit.media.songs[0];
+
     };
 
-    app.controller("artistController", ["$scope", 'artistData', 'artistInit', artistController]);
+    app.controller("artistController", ["$scope", 'artistData', 'artistInit','$log', artistController]);
 }())

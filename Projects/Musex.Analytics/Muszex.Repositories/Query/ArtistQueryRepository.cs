@@ -26,12 +26,14 @@ namespace Muszex.Repositories
                 {
                     new ArtistBundle(
                         new Artist(1,"Iman Omari", new List<SocialLink>(),  new Locale("USA", "California"),new List<Genre>{Genre.RnB, Genre.HipHop}),
-                        new ArtistMedia(1,"/Content/videos/imom2.mp4","/Content/images/artists/imom.jpeg")
-                        ),
+                        new ArtistMedia(1,"/Content/videos/imom2.mp4","/Content/images/artists/imom.jpeg",new List<Song>
+                        {
+                            new Song("Energy","/content/audio/imomeneg.mp3")
+                        })),
                         new ArtistBundle(
                         new Artist(2,"Doja Cat", new List<SocialLink>(),  new Locale("USA", "Los Angeles"),new List<Genre>{Genre.RnB, Genre.Trap, Genre.Electronic,Genre.Rap}),
-                        new ArtistMedia(1,"/Content/videos/dojacat.mp4","")
-                        )
+                        new ArtistMedia(1,"/Content/videos/dojacat.mp4","",new List<Song>{new Song("Beautiful","/content/audio/dojabeau.mp3")}))
+                        
                 };
             }
         }

@@ -9,7 +9,10 @@
 <html ng-app="artistApp">
 <head>
     <link href="~/Content/Artist.css" rel="stylesheet" />
-    <title>title</title>
+    <link href="~/Content/controls/360player.css" rel="stylesheet" />
+    <link href="~/Content/controls/360player-visualization.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <title>MUSZEX</title>
     <script src="~/Scripts/angular.js"></script>
     <script src="~/app/app.js"></script>
     <script src="~/Scripts/jquery-1.9.1.js"></script>
@@ -17,7 +20,11 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/app/services/artistData.js"></script>
     <script src="~/app/artist/artistController.js"></script>
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/berniecode-animator.js"></script>
+    <script src="~/Scripts/soundmanager2.js"></script>
+    <script src="~/Scripts/360player.js"></script>
+    <script src="~/Scripts/angular-animate.js"></script>
+    <script src="~/app/directives/muszexPlayer.js"></script>
     <style>
         .rounded button {
             border-radius: 10px;
@@ -30,7 +37,7 @@
             background: rgba(0,0,0,0.5);
         }
 
-        .white-text  {
+        .white-text {
             color: white;
         }
 
@@ -44,41 +51,42 @@
             margin: 0px;
             padding: 0px;
         }
-
     </style>
-    
-    <script> 
-        angular.module("artistApp").value("artistInit", @Html.Raw(Model.ArtistJSon));
-    </script>
+
+
 
 </head>
 <body style="background: rgba(0,0,0,0)">
-    <video style="background: @Model.MediaPath.PictureLink" autoplay loop poster="@Model.MediaPath.PictureLink" id="bgvid">
-        <source src="@Model.MediaPath.VideoLink" type="video/mp4">
+    <video style="background: @Model.MediaPath.PicturePath" autoplay loop poster="@Model.MediaPath.PicturePath" id="bgvid">
+        <source src="@Model.MediaPath.VideoPath" type="video/mp4">
     </video>
 
     <div ng-controller="artistController">
-        <div class="navbar navbar-inverse no-gutter" role="navigation">
-            <div class="navbar-header">
-                <a class="navbar-brand" style="color: red">MUSZEX</a>
-                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <ul class="dropdown-menu">
-                        <li><a href="/#/Home">Home</a></li>
-                    </ul>
-                </button>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#/Home">Home</a> </li>
-                        <li><a href="#/Portfolio">Portfolio</a> </li>
-                        <li><a href="#/Home">Statistics</a> </li>
-                    </ul>
+        <div class="navbar navbar-inverse no-gutter">
+            <div class="navbar-header pull-left">
+                <a class="navbar-brand" style="color: red;">MUSZEX</a>
+                <div class="navbar-header pull-right">
+                    <button class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <ul class="dropdown-menu">
+                            <li><a href="/#/Home">Home</a></li>
+                        </ul>
+                    </button>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="#/Home">Home</a> </li>
+                            <li><a href="#/Portfolio">Portfolio</a> </li>
+                            <li><a href="#/Home">Statistics</a> </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+
+
         <div class="row bg">
             <div class="col-lg-1 col-md-1 col-sm-1" style="background:red">&nbsp;</div>
             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-11">
@@ -88,7 +96,7 @@
 
             </div>
 
-            <div class="col-lg-2 col-md-4 col-sm-8 col-xs-12 rounded" >
+            <div class="col-lg-2 col-md-4 col-sm-8 col-xs-12 rounded">
                 <div class="row">
                     <div class="col-lg-6 col-sm-6 col-xs-6">
                         <button class="btn-success ">
@@ -126,7 +134,7 @@
         <div class="row">
             <div class="col-lg-1 col-md-1">&nbsp;</div>
             <div class="col-lg-6 col-md-6">
-                <ul style="margin-left: -50px; margin-top: 20px" >
+                <ul style="margin-left: -50px; margin-top: 20px">
                     <li class="stack-horizontal"><img src="~/Content/images/social/fb.png" /></li>
                     <li class="stack-horizontal"><img src="~/Content/images/social/Soundcloud.png" /></li>
                     <li class="stack-horizontal"><img src="~/Content/images/social/Twitter.png" /></li>
@@ -136,19 +144,11 @@
                 </ul>
             </div>
         </div>
+        <div style="position: absolute; bottom: 0;" class="row">
+            <muszex-player song-name="currentSong.title" src="currentSong.path" onready="alertReady()"></muszex-player>
+        </div>
         <script>
-            var video = document.getElementById("bgvid");
-            pauseButton = document.querySelector("#polina button");
-            function vidFade() { video.classList.add("stopfade"); }
-            video.addEventListener('ended', function() {
-                video.pause(); vidFade();
-            }, false);
-            //pauseButton.addEventListener("click", function () {
-            //    video.classList.toggle("stopfade"); if (video.paused) { video.play(); pauseButton.innerHTML = "Pause"; } else { video.pause(); pauseButton.innerHTML = "Paused"; }
-            //}, false);
-            //video.addEventListener('touchstart', function (e) {
-            //    e.preventDefault(); video.play();
-            //})
+            angular.module("artistApp").value("artistInit", @Html.Raw(Model.ArtistJSon));
 
         </script>
     </div>
