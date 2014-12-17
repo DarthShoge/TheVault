@@ -14,7 +14,11 @@ let main argv =
     let chrt = (stocks |> normalized |> DisplayChart)
     chrt.SaveChartAs("normalised.jpg",FSharp.Charting.ChartTypes.ChartImageFormat.Jpeg)
     let dailyRets = dailyReturns stocks
+    let allStcks = getAllSymbols() |> Seq.toArray
     let curried = correlationChart dailyRets
+    let dates = getNYSEDates startDate endDate
+    let events = EventProfiler("SPX").FindEvents "AAPL" stocks dates
+
     (curried "GLD" "XOM").SaveChartAs("cor.jpg",FSharp.Charting.ChartTypes.ChartImageFormat.Jpeg)
     printfn "%A" argv
     0 // return an integer exit code

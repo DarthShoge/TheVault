@@ -21,6 +21,7 @@ open MathNet.Numerics.Statistics
 let startDate = new DateTime(2011, 01, 01)
 let endDate = new DateTime(2012, 01, 01)
 let dates = getNYSEDates startDate endDate |> Array.map(fun x -> x.ToString()) 
+let snP = getSnP500Symbols()
 let symbols = [|"AAPL"; "MSFT"; "XOM"; "SPX"; "GLD"|]
 let stocks = loadStocks symbols startDate endDate
 

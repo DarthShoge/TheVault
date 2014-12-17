@@ -7,8 +7,17 @@ open MathNet.Numerics.Statistics
 open Capital.Extensions
 
 type Tick = {Date:DateTime ; O:double;H:double;L:double;C:double;AC:double; V:double}
+type Symbol = {Ticker:string; CompanyName:string; }
 type StockData = CsvProvider<"D:\\Code\Repos\\TheVault\\Projects\\ShogeCapital\\Capital.Main\\table.csv">
+type SnPData = JsonProvider<"http://data.okfn.org/data/core/s-and-p-500-companies/r/constituents.json">
 
+let private worldBank = WorldBankData.GetDataContext()
+let private freeBase = FreebaseData.GetDataContext()
+
+let getSnP500Symbols() = 
+    SnPData.GetSamples()
+    |> Seq.map(fun x -> {Ticker= x.Symbol; CompanyName =x.Name})
+    |> Seq.toArray
 
 let urlFor symbol (startDate:System.DateTime) (endDate:System.DateTime) = 
     sprintf "http://ichart.finance.yahoo.com/table.csv?s=%s&a=%i&b=%i&c=%i&d=%i&e=%i&f=%i" 
@@ -16,7 +25,15 @@ let urlFor symbol (startDate:System.DateTime) (endDate:System.DateTime) =
         (startDate.Month - 1) startDate.Day startDate.Year 
         (endDate.Month - 1) endDate.Day endDate.Year
 
+let getAllSymbols() =
+    let parse_d (d : string) = 
+        match d with
+        |null -> None
+        |x when x.ToCharArray() |> Array.length <= 4 -> Some(DateTime(x.AsInteger(),1,1))
+        |x -> Some(DateTime.Parse(x))
 
+    freeBase.``Products and Services``.Business.``Stock exchanges``.Individuals100.NYSE.``Companies traded``
+    |> Seq.map(fun x -> {Ticker = x.``Ticker symbol``; CompanyName = x.Name; })
 
 let getStockData sym startdate (enddate) : Tick array =
     StockData.Load(urlFor sym startdate enddate).Rows 
@@ -93,8 +110,39 @@ let correlationChart (dailyReturns :Frame<'a,'b>) index1 index2 =
     |> Chart.WithLegend (Docking = ChartTypes.Docking.Top)    
     |> Chart.WithXAxis (Enabled = false) 
     |> Chart.WithYAxis (Enabled = false)
-// 
-//// That's pretty correlated
-//correlationChart "SPX" "XOM"
-//// Not really correlatde
-//correlationChart "SPX" "GLD"
+
+
+
+type EventProfiler(marketSymbol, eventPredicate) =
+    let findEvents symbol (stockFrame : Frame<DateTime,string>) rawDates =
+        let marketSeries = stockFrame.[marketSymbol]
+        let nonMarketSeries = stockFrame |>  Frame.filterCols(fun x y -> x <> marketSymbol)
+        let dates = rawDates
+                    |> Array.sortBy(fun (x: DateTime) -> -x.Ticks)
+                    |> Array.toList
+        let rec innerFindEvents  (ser : Series<DateTime,double>) (dates: DateTime list) accu = 
+            match dates with
+            |[] -> accu
+            | c::[] -> accu
+            |today::nextDays ->
+                let result = match ser with
+                    |s when (s |> Series.countValues) < 2 -> (today => 0)
+                    |s when not <| s.ContainsKey(today) -> (today => 0)
+                    |symSer -> 
+                        let getDailyReturnForToday (series : Series<DateTime,double>) = 
+                            let seriesToday, seriesYester = series.[today], series.[nextDays.Head]
+                            (seriesToday/seriesYester) - 1.
+                        let mktSer = marketSeries
+                        let symReturn = getDailyReturnForToday symSer 
+                        let mktReturn = getDailyReturnForToday mktSer
+                        if eventPredicate symReturn mktReturn then (today => 1) else (today => 0)
+                innerFindEvents ser nextDays (result::accu)
+        let intermediateResult =  Series.ofObservations (innerFindEvents stockFrame.[symbol] dates [])
+        intermediateResult
+    new(marketSymbol) = EventProfiler(marketSymbol, fun symRet mktRet -> symRet <= -0.03 && mktRet >= 0.02)
+    member x.FindEvents stock dates =  findEvents stock dates
+    member x.FindAllEvents (stocks : Frame<DateTime,string>) dates = 
+        stocks |> Frame.map(fun col sers -> findEvents sers dates)
+//        let results = nonMarketSeries |> Frame.mapCols(fun c rows ->
+//                RowSeries
+//            )
