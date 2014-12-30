@@ -21,11 +21,21 @@ open MathNet.Numerics.Statistics
 let startDate = new DateTime(2011, 01, 01)
 let endDate = new DateTime(2012, 01, 01)
 let dates = getNYSEDates startDate endDate |> Array.map(fun x -> x.ToString()) 
-let snP = getSnP500Symbols()
 let symbols = [|"AAPL"; "MSFT"; "XOM"; "SPX"; "GLD"|]
 let stocks = loadStocks symbols startDate endDate
 
 (stocks |> normalized |> DisplayChart).ShowChart()
+
+printf "Event block began \n"
+let sw = System.Diagnostics.Stopwatch.StartNew()
+let snP = getSnP500Symbols()
+let snpSymbols = "SPX"::(snP |> Array.map(fun x -> x.Ticker) |> Seq.toList)
+let sdata = loadStocks (snpSymbols |> List.toArray) startDate endDate
+printf "loading data took %d seconds \n" (sw.ElapsedMilliseconds / 1000L)
+let profiler = EventProfiler("SPX", fun symRet mktRet -> symRet <= -0.03 && mktRet >= 0.02)
+let events  = profiler.FindAllEvents sdata (getNYSEDates startDate endDate)
+printf "FINISHED %d seconds" (sw.ElapsedMilliseconds / 1000L)
+
 let dailyRets = dailyReturns stocks
 let curried = correlationChart dailyRets
 (curried "GLD" "XOM").ShowChart()

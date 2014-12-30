@@ -21,6 +21,8 @@ let getSnP500Symbols() =
 
 let urlFor symbol (startDate:System.DateTime) (endDate:System.DateTime) = 
     sprintf "http://ichart.finance.yahoo.com/table.csv?s=%s&a=%i&b=%i&c=%i&d=%i&e=%i&f=%i" 
+    // sprintf "http://real-chart.finance.yahoo.com/table.csv?s=%s&d=%i&e=%i&f=%i&g=d&a=%i&b=%i&c=%i&ignore=.csv"
+    
         symbol
         (startDate.Month - 1) startDate.Day startDate.Year 
         (endDate.Month - 1) endDate.Day endDate.Year
@@ -36,9 +38,19 @@ let getAllSymbols() =
     |> Seq.map(fun x -> {Ticker = x.``Ticker symbol``; CompanyName = x.Name; })
 
 let getStockData sym startdate (enddate) : Tick array =
-    StockData.Load(urlFor sym startdate enddate).Rows 
-    |> Seq.map(fun x -> {Date=x.Date ; O=(double)x.Open; H=(double)x.High; L= (double)x.Low; C = (double)x.Close;AC = (double)x.``Adj Close``;V=(double)x.Volume})
-    |> Seq.toArray
+    let urlToLoad = urlFor sym startdate enddate
+    try 
+        StockData.Load(urlToLoad).Rows 
+        |> Seq.map(fun x -> {Date=x.Date ; O=(double)x.Open; H=(double)x.High; L= (double)x.Low; C = (double)x.Close;AC = (double)x.``Adj Close``;V=(double)x.Volume})
+        |> Seq.toArray
+    with
+        | :? System.Net.WebException -> 
+            printf "%A did not have data \n" sym
+            let rec createEmptyTicks date arr = 
+                match date with
+                |e when date = enddate -> arr 
+                |d -> createEmptyTicks (d.AddDays(1.)) (({Date = d;O = 0.;H = 0.;L = 0.; C = 0.; AC = 0.;V = 0.})::arr)
+            (createEmptyTicks startdate []) |> List.toArray
 
 let backFill (ser : double seq) = 
     let backfiller (l : double list) =
@@ -68,7 +80,6 @@ let loadStocks symbols startDate endDate =
     ]
     |> Frame.ofColumns
     |> Frame.fillMissing(Direction.Backward)
-
 
 //// Normalize returned values so they can be easily compared
 let normalized stocks = 
@@ -141,8 +152,8 @@ type EventProfiler(marketSymbol, eventPredicate) =
         intermediateResult
     new(marketSymbol) = EventProfiler(marketSymbol, fun symRet mktRet -> symRet <= -0.03 && mktRet >= 0.02)
     member x.FindEvents stock dates =  findEvents stock dates
-    member x.FindAllEvents (stocks : Frame<DateTime,string>) dates = 
-        stocks |> Frame.map(fun col sers -> findEvents sers dates)
+    member x.FindAllEvents (stocks : Frame<DateTime,string>) (dates : DateTime[]) = 
+        stocks |> Frame.mapCols(fun col ticker -> x.FindEvents col stocks dates)
 //        let results = nonMarketSeries |> Frame.mapCols(fun c rows ->
 //                RowSeries
 //            )

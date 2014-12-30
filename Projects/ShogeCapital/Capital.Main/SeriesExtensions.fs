@@ -37,7 +37,7 @@ module List =
         trickle [] 1
 
 
-    let cut n s =
+    let takeSkip n (s :_ list) =
         let rec cutIter (n: int) acc (ss : _ list) =
             let trueN = if  n > ss.Length then ss.Length else n
             if ss |> Seq.length = 0 || n <= 0 then acc

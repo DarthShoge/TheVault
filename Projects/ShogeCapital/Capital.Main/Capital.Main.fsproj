@@ -101,6 +101,7 @@
     <Compile Include="SeriesExtensions.fs" />
     <Compile Include="Main.fs" />
     <None Include="PlayGround.fsx" />
+    <Compile Include="Agent.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
