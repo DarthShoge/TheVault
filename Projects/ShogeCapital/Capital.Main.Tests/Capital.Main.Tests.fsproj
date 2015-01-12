@@ -67,7 +67,7 @@
     <Compile Include="FrameOpsShould.fs" />
     <None Include="packages.config" />
     <None Include="App.config" />
-    <Compile Include="CapitalTests.fs" />
+    <Compile Include="EventStudyTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Capital.Main\Capital.Main.fsproj">

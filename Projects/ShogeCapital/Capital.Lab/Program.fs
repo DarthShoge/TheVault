@@ -19,15 +19,16 @@ let main argv =
     let curried = correlationChart dailyRets
     let dates = getNYSEDates startDate endDate
 
+    System.Threading.Thread.Sleep(10000)
     printf "Event block began \n"
     let sw = System.Diagnostics.Stopwatch.StartNew()
     let snP = getSnP500Symbols()
     let snpSymbols = "SPX"::(snP |> Array.map(fun x -> x.Ticker) |> Seq.toList)
-    let ssData = loadStocksWithAgents snpSymbols startDate endDate
-    let sdata = loadStocks (snpSymbols |> List.toArray) startDate endDate
+    let sdata = loadStocksParallel (snpSymbols |> List.toArray) startDate endDate 70
     printf "loading data took %d seconds \n" (sw.ElapsedMilliseconds / 1000L)
     let profiler = EventProfiler("SPX", fun symRet mktRet -> symRet <= -0.03 && mktRet >= 0.02)
     let events  = profiler.FindAllEvents sdata (getNYSEDates startDate endDate)
+    let events2  = profiler.ProfileAll stocks (getNYSEDates startDate endDate) 10
     printf "FINISHED %d seconds" (sw.ElapsedMilliseconds / 1000L)
 
     (curried "GLD" "XOM").SaveChartAs("cor.jpg",FSharp.Charting.ChartTypes.ChartImageFormat.Jpeg)

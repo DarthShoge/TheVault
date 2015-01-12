@@ -9,6 +9,11 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Capital.Lab", "Capital.Lab\
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Capital.Main.Tests", "Capital.Main.Tests\Capital.Main.Tests.fsproj", "{E5C77A99-9CB6-475F-A94C-9246A4D76993}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6001B25D-4744-452D-BC6A-7E4335F3ADE4}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,5 +57,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

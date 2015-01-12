@@ -100,8 +100,8 @@
     <None Include="table.csv" />
     <Compile Include="SeriesExtensions.fs" />
     <Compile Include="Main.fs" />
-    <None Include="PlayGround.fsx" />
     <Compile Include="Agent.fs" />
+    <None Include="PlayGround.fsx" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>

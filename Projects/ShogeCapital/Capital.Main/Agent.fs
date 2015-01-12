@@ -1,6 +1,7 @@
 ﻿module Agents
 open main
 open Capital.Extensions
+open Deedle
 open System
 
 type Agent<'T> = MailboxProcessor<'T>
@@ -13,7 +14,7 @@ type StockDataAction =
     | Request of (string * DateTime * DateTime)
     | Download of AsyncReplyChannel<(string*Tick array) list>
 
-let agent = Agent<AgentAction>.Start(fun inbox ->
+let a = Agent<AgentAction>.Start(fun inbox ->
     let results = []
     let rec loop arr = async{
         let! msg = inbox.Receive()
@@ -37,7 +38,8 @@ let createStockAgent() = Agent<StockDataAction>.Start(fun inbox ->
         |Request(x) ->
             let stock,strt,``end`` = x
             let result = getStockData stock strt ``end``
-            return! loop ((stock,result)::arr)
+            let next = (stock,result)::arr
+            return! loop next
         |Download(r) -> 
             r.Reply(arr)
             return! loop arr
@@ -47,18 +49,27 @@ let createStockAgent() = Agent<StockDataAction>.Start(fun inbox ->
     )
 
 
-let loadStocksWithAgents (symbols : string seq) startDate endDate =
-    let splitStocks = symbols |> Seq.toList |>List.takeSkip 3
+let getStockDataParallel (symbols : string seq) startDate endDate batchSize =
+    let splitStocks = symbols |> Seq.toList |> List.takeSkip batchSize
     let rec callAgents batch agents =
         match batch with
-        |[]  -> agents
         |h::t ->  
             let agent = createStockAgent()
-            for v in h do agent.Post(Request(v,startDate,endDate))
-            callAgents t (agent::agents)
-    let allAgents = (callAgents splitStocks []) |> Seq.toArray
-    let chiefAgent = allAgents.[0]
-    let allData = chiefAgent.PostAndReply(fun replyChannel -> Download replyChannel)
-    allData
+            h |> List.iter(fun x ->  agent.Post(Request(x,startDate,endDate)))
+            let updated = (agent::agents)
+            callAgents t updated
+        |[]  -> agents
 
-let x =agent.PostAndReply(fun replyChannel -> Get replyChannel)
+    let allAgents = (callAgents splitStocks [])
+    let allData = allAgents |> Seq.map(fun agnt ->  agnt.PostAndReply(fun replyChannel -> Download replyChannel)) |> Seq.collect(fun x -> x)
+    allData 
+
+let loadStocksParallel symbols startDate endDate batchSize =
+    let completed = getStockDataParallel symbols startDate endDate batchSize
+    [for (ticker,data) in completed ->
+        ticker => ((data |> toSeries (fun x -> x.AC)) |> Series.sortByKey)
+    ]
+    |> Frame.ofColumns
+    |> Frame.fillMissing(Direction.Backward)
+
+let x =a.PostAndReply(fun replyChannel -> Get replyChannel)

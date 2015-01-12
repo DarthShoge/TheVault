@@ -41,6 +41,6 @@ module List =
         let rec cutIter (n: int) acc (ss : _ list) =
             let trueN = if  n > ss.Length then ss.Length else n
             if ss |> Seq.length = 0 || n <= 0 then acc
-            else cutIter n ((ss |> Seq.take trueN)::acc) (ss |> Seq.skip trueN |> Seq.toList)
+            else cutIter n ((ss |> Seq.take trueN |> Seq.toList)::acc) (ss |> Seq.skip trueN |> Seq.toList)
         cutIter n [] s 
 

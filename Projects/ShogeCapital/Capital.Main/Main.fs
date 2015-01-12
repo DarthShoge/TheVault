@@ -13,6 +13,7 @@ type SnPData = JsonProvider<"http://data.okfn.org/data/core/s-and-p-500-companie
 
 let private worldBank = WorldBankData.GetDataContext()
 let private freeBase = FreebaseData.GetDataContext()
+let dt(y,m,d) = DateTime(y,m,d)
 
 let getSnP500Symbols() = 
     SnPData.GetSamples()
@@ -80,6 +81,7 @@ let loadStocks symbols startDate endDate =
     ]
     |> Frame.ofColumns
     |> Frame.fillMissing(Direction.Backward)
+
 
 //// Normalize returned values so they can be easily compared
 let normalized stocks = 
@@ -150,10 +152,53 @@ type EventProfiler(marketSymbol, eventPredicate) =
                 innerFindEvents ser nextDays (result::accu)
         let intermediateResult =  Series.ofObservations (innerFindEvents stockFrame.[symbol] dates [])
         intermediateResult
+
+    let processEvents (stock : Series<DateTime,double>) dates lookbck = 
+        let rec innerProcess dts vals = 
+            match dts with
+            |[] -> vals
+            |evntDate::t ->
+                let filtered = stock |> Series.filterValues(fun y -> y <> 0.0)
+                let after, before = (filtered.After evntDate) , filtered.Before evntDate
+                let result = 
+                    match (after, before) with
+                    |(a, b) when a |> Series.countKeys < lookbck -> None
+                    |(a, b) when b |> Series.countKeys < lookbck -> None
+                    |(a,b) ->
+                        let upper = after |> Series.take lookbck |> Series.lastKey
+                        let lower = before |> Series.rev |> Series.take lookbck  |> Series.lastKey
+                        let captures = filtered.Between( lower, upper)
+                        let obs = captures.Values |> Seq.mapi(fun i x -> (i - lookbck) => x)
+                        Some(Series.ofObservations obs)
+                innerProcess t (result::vals)
+        innerProcess dates [] |> List.filter(fun x -> x.IsSome) |> List.map(fun x -> x.Value)
+
+
+    let profileEvents (stock : Series<DateTime,double>) (events : Series<DateTime,int>) lookback = 
+        let triggeredEvents = events |> Series.filterValues(fun x -> x = 1) 
+        let eventDates = triggeredEvents.Keys |> Seq.toList
+        let results = processEvents stock eventDates lookback
+        results
+
     new(marketSymbol) = EventProfiler(marketSymbol, fun symRet mktRet -> symRet <= -0.03 && mktRet >= 0.02)
+
     member x.FindEvents stock dates =  findEvents stock dates
     member x.FindAllEvents (stocks : Frame<DateTime,string>) (dates : DateTime[]) = 
         stocks |> Frame.mapCols(fun col ticker -> x.FindEvents col stocks dates)
-//        let results = nonMarketSeries |> Frame.mapCols(fun c rows ->
-//                RowSeries
-//            )
+    member x.ProfileEvents rets evs lookbck = profileEvents rets evs lookbck
+    member x.ProfileAll (stocks : Frame<DateTime,string>) (dates : DateTime[]) lookback =
+        let r = (stocks).Columns.Observations |> Seq.map(fun col -> 
+                        let evnts = x.FindEvents col.Key stocks dates
+                        let prcs = col.Value.As<double>() 
+                        let returns  = prcs |> Series.pairwiseWith (fun k (v1, v2) -> (v2/v1) - 1.)
+                        let results = x.ProfileEvents returns evnts lookback |> Seq.toArray
+                        results
+                        ) |> Seq.collect(fun x -> x) |> Seq.toList
+        let iterator = ref 0
+        frame [for v in r do 
+                    let x = iterator.Value =>  v
+                    iterator := iterator.Value + 1
+                    yield x
+                     ]
+
+

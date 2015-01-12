@@ -6,9 +6,15 @@ open System
 open Deedle
 open main
 
+
 [<TestFixture>]
 type Given_i_am_operating_over_frames() = 
     
+//    [<Test>]
+//    member given.``a series with two values is returnised then correct values are returned``() =
+//        let aapl = series [dt(2012,01,09) => 12; dt(2012,01,10) => 8]
+//        let result = returnise aapl
+//        result |> should equal  (series [dt(2012,01,09) => 0; dt(2012,01,10) => 8])
 
 
     [<Test>]
