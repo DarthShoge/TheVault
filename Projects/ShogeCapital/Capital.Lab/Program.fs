@@ -26,12 +26,13 @@ let main argv =
     let snpSymbols = "SPX"::(snP |> Array.map(fun x -> x.Ticker) |> Seq.toList)
     let sdata = loadStocksParallel (snpSymbols |> List.toArray) startDate endDate 70
     printf "loading data took %d seconds \n" (sw.ElapsedMilliseconds / 1000L)
-    let profiler = EventProfiler("SPX", fun symRet mktRet -> symRet <= -0.03 && mktRet >= 0.02)
+    let profiler = EventProfiler("SPX", fun symRet mktRet -> mktRet <= -0.05 && symRet >= 0.05)
     let events  = profiler.FindAllEvents sdata (getNYSEDates startDate endDate)
-    let events2  = profiler.ProfileAll stocks (getNYSEDates startDate endDate) 10
-    printf "FINISHED %d seconds" (sw.ElapsedMilliseconds / 1000L)
+    let events2  = profiler.ProfileAll sdata (getNYSEDates startDate endDate) 20
 
+    (eventsChart events2).SaveChartAs("cor.jpg",FSharp.Charting.ChartTypes.ChartImageFormat.Jpeg)
     (curried "GLD" "XOM").SaveChartAs("cor.jpg",FSharp.Charting.ChartTypes.ChartImageFormat.Jpeg)
     printfn "%A" argv
+    printf "FINISHED %d seconds" (sw.ElapsedMilliseconds / 1000L)
     Console.ReadLine()
     0 // return an integer exit code

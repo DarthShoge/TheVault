@@ -6,6 +6,7 @@ open FSharp.Charting
 open MathNet.Numerics.Statistics
 open Capital.Extensions
 
+type stats = MathNet.Numerics.Statistics.Statistics
 type Tick = {Date:DateTime ; O:double;H:double;L:double;C:double;AC:double; V:double}
 type Symbol = {Ticker:string; CompanyName:string; }
 type StockData = CsvProvider<"D:\\Code\Repos\\TheVault\\Projects\\ShogeCapital\\Capital.Main\\table.csv">
@@ -107,7 +108,7 @@ let mapStocks f stocks =
         |> Series.pairwiseWith (fun k (v1, v2) -> f v1 v2))
 
 let dailyReturns stocks =
-    mapStocks (fun v1 v2 -> v2/v1 - 1.0m) stocks
+    mapStocks (fun v1 v2 -> v2 - v1/v1) stocks
 
 
  
@@ -124,11 +125,19 @@ let correlationChart (dailyReturns :Frame<'a,'b>) index1 index2 =
     |> Chart.WithXAxis (Enabled = false) 
     |> Chart.WithYAxis (Enabled = false)
 
+let getDailyReturnForToday (today : DateTime) (nextDays : DateTime list) (ser : Series<DateTime,double>) = 
+    let seriesToday, seriesYester = ser.[today], ser.[nextDays.Head]
+    (seriesToday/seriesYester) - 1.
 
+let defaultStrategy ep today nextDays mktSer symSer  =                         
+    let symReturn = getDailyReturnForToday today nextDays symSer 
+    let mktReturn = getDailyReturnForToday today nextDays mktSer
+    ep symReturn mktReturn
 
-type EventProfiler(marketSymbol, eventPredicate) =
+type EventProfiler(marketSymbol, strategyPredicate) =
     let findEvents symbol (stockFrame : Frame<DateTime,string>) rawDates =
         let marketSeries = stockFrame.[marketSymbol]
+
         let nonMarketSeries = stockFrame |>  Frame.filterCols(fun x y -> x <> marketSymbol)
         let dates = rawDates
                     |> Array.sortBy(fun (x: DateTime) -> -x.Ticks)
@@ -142,13 +151,7 @@ type EventProfiler(marketSymbol, eventPredicate) =
                     |s when (s |> Series.countValues) < 2 -> (today => 0)
                     |s when not <| s.ContainsKey(today) -> (today => 0)
                     |symSer -> 
-                        let getDailyReturnForToday (series : Series<DateTime,double>) = 
-                            let seriesToday, seriesYester = series.[today], series.[nextDays.Head]
-                            (seriesToday/seriesYester) - 1.
-                        let mktSer = marketSeries
-                        let symReturn = getDailyReturnForToday symSer 
-                        let mktReturn = getDailyReturnForToday mktSer
-                        if eventPredicate symReturn mktReturn then (today => 1) else (today => 0)
+                        if strategyPredicate today nextDays marketSeries symSer  then (today => 1) else (today => 0)
                 innerFindEvents ser nextDays (result::accu)
         let intermediateResult =  Series.ofObservations (innerFindEvents stockFrame.[symbol] dates [])
         intermediateResult
@@ -180,7 +183,10 @@ type EventProfiler(marketSymbol, eventPredicate) =
         let results = processEvents stock eventDates lookback
         results
 
-    new(marketSymbol) = EventProfiler(marketSymbol, fun symRet mktRet -> symRet <= -0.03 && mktRet >= 0.02)
+    new(marketSymbol, ep : double -> double -> bool) = 
+        let curriedDefault = defaultStrategy ep
+        EventProfiler(marketSymbol,curriedDefault)
+    new(marketSymbol) = EventProfiler(marketSymbol,  fun symRet mktRet -> symRet <= -0.03 && mktRet >= 0.02)
 
     member x.FindEvents stock dates =  findEvents stock dates
     member x.FindAllEvents (stocks : Frame<DateTime,string>) (dates : DateTime[]) = 
@@ -190,7 +196,14 @@ type EventProfiler(marketSymbol, eventPredicate) =
         let r = (stocks).Columns.Observations |> Seq.map(fun col -> 
                         let evnts = x.FindEvents col.Key stocks dates
                         let prcs = col.Value.As<double>() 
-                        let returns  = prcs |> Series.pairwiseWith (fun k (v1, v2) -> (v2/v1) - 1.)
+                        let returns  = prcs |> Series.pairwiseWith (fun k (v1, v2) ->if v1 = 0. then 1. else (v2-v1) / v1)
+                        //DEBUGGING
+                        if returns.Values |> Seq.exists(fun xx -> xx > 100.) then
+                            let x = 1 * 2
+                            () 
+                        else 
+                            ()
+                        //DEBUGGING
                         let results = x.ProfileEvents returns evnts lookback |> Seq.toArray
                         results
                         ) |> Seq.collect(fun x -> x) |> Seq.toList
@@ -202,3 +215,13 @@ type EventProfiler(marketSymbol, eventPredicate) =
                      ]
 
 
+let eventsChart (eventsReturns : Frame<int,int>) =
+    let rowCount = (eventsReturns.RowCount - 1) / 2
+    let eventCount = eventsReturns.Columns.ValueCount
+    let cumprodReturns = eventsReturns |> Frame.mapCols(fun c x -> x.As<double>() + 1. |> Series.scanValues(fun i j -> i * j) 1. )
+    let rows = cumprodReturns.Rows.Values
+    let avgSer = rows |> Seq.toArray |> Array.mapi(fun i x -> i - rowCount => stats.Mean( x.As<double>().Values))
+    Chart.Line(avgSer)
+    |> Chart.WithTitle(eventCount.ToString() + " Events Processed")
+    |> Chart.WithYAxis(Title = "mean", Enabled = true)    
+    |> Chart.WithXAxis(Title = "timeStep", Enabled = true)

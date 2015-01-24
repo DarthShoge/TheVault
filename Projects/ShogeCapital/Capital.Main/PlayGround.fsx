@@ -26,6 +26,9 @@ let dates = getNYSEDates startDate endDate |> Array.map(fun x -> x.ToString())
 let symbols = [|"AAPL"; "MSFT"; "XOM"; "SPX"; "GLD"|]
 let stocks = loadStocks symbols startDate endDate
 
+let d = series[1 => 0.4; 2 => 0.8; 3 => 1.]
+let productive_d = d + 1.
+productive_d |> Series.scanValues (fun x y -> y * x) 1.
 (stocks |> normalized |> DisplayChart).ShowChart()
 
 printf "Event block began \n"
@@ -34,7 +37,7 @@ let snP = getSnP500Symbols()
 let snpSymbols = "SPX"::(snP |> Array.map(fun x -> x.Ticker) |> Seq.toList)
 let sdata = loadStocksParallel (snpSymbols |> List.toArray) startDate endDate batchSize
 printf "loading data took %d seconds \n" (sw.ElapsedMilliseconds / 1000L)
-let profiler = EventProfiler("SPX", fun symRet mktRet -> symRet <= 0.05 && mktRet >= 0.1)
+let profiler = EventProfiler("SPX", fun symRet mktRet -> mktRet <= -0.05 && symRet >= 0.05)
 //let events  = profiler.FindAllEvents sdata (getNYSEDates startDate endDate)
 let events2  = profiler.ProfileAll sdata (getNYSEDates startDate endDate) 20
 printf "FINISHED %d seconds" (sw.ElapsedMilliseconds / 1000L)
@@ -42,3 +45,4 @@ printf "FINISHED %d seconds" (sw.ElapsedMilliseconds / 1000L)
 let dailyRets = dailyReturns stocks
 let curried = correlationChart dailyRets
 (curried "GLD" "XOM").ShowChart()
+(eventsChart events2).ShowChart()
