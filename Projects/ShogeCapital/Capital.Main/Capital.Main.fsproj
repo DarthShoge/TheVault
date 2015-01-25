@@ -96,11 +96,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Compile Include="providers.fs" />
     <None Include="table.csv" />
+    <Compile Include="DataStructures.fs" />
+    <Compile Include="DataProviders.fs" />
     <Compile Include="SeriesExtensions.fs" />
     <Compile Include="Main.fs" />
     <Compile Include="Agent.fs" />
+    <Compile Include="Charting.fs" />
+    <Compile Include="EventProfiler.fs" />
     <None Include="PlayGround.fsx" />
   </ItemGroup>
   <PropertyGroup>

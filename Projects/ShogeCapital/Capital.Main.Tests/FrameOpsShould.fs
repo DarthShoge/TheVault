@@ -4,7 +4,7 @@ open NUnit.Framework
 open FsUnit
 open System
 open Deedle
-open main
+open Capital.Engine
 
 
 [<TestFixture>]

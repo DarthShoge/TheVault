@@ -7,14 +7,22 @@
 #r "D:/Code/Repos/TheVault/Projects/ShogeCapital/packages/FSharp.Data.2.0.14/lib/net40/FSharp.Data.dll"
 #r "D:/Code/Repos/TheVault/Projects/ShogeCapital/packages/FSharp.Charting.0.90.7/lib/net40/FSharp.Charting.dll"
 #load "SeriesExtensions.fs"
+#load "DataStructures.fs"
+#load "DataProviders.fs"
 #load "Main.fs"
 #load "Agent.fs"
+#load "Charting.fs"
+#load "EventProfiler.fs"
 #load "../packages/Deedle.1.0.6/Deedle.fsx"
 #load "../packages/FSharp.Charting.0.90.7/FSharp.Charting.fsx"
 open Deedle
+open Capital.DataProviders
+open Capital.DataStructures
 open System
+open Capital.Charting
+open Capital.EventProfiler
 open Agents
-open main
+open Capital.Engine
 open FSharp.Data
 open FSharp.Charting
 open MathNet.Numerics.Statistics
@@ -37,7 +45,7 @@ let snP = getSnP500Symbols()
 let snpSymbols = "SPX"::(snP |> Array.map(fun x -> x.Ticker) |> Seq.toList)
 let sdata = loadStocksParallel (snpSymbols |> List.toArray) startDate endDate batchSize
 printf "loading data took %d seconds \n" (sw.ElapsedMilliseconds / 1000L)
-let profiler = EventProfiler("SPX", fun symRet mktRet -> mktRet <= -0.05 && symRet >= 0.05)
+let profiler = EventProfiler("SPX", fun symRet mktRet -> mktRet <= -0.1 && symRet >= 0.1)
 //let events  = profiler.FindAllEvents sdata (getNYSEDates startDate endDate)
 let events2  = profiler.ProfileAll sdata (getNYSEDates startDate endDate) 20
 printf "FINISHED %d seconds" (sw.ElapsedMilliseconds / 1000L)

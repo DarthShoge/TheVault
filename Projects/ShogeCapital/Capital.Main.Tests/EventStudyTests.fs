@@ -1,12 +1,11 @@
 ﻿module CapitalTests
-
-
 open NUnit.Framework
 open FsUnit
 open System
 open Deedle
 open MathNet.Numerics.Statistics
-open main
+open Capital.Engine
+open Capital.EventProfiler
 
 [<TestFixture>]
 type ``event profiler should``() =

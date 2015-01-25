@@ -1,7 +1,15 @@
 ﻿// Learn more about F# at http://fsharp.net
 // See the 'F# Tutorial' project for more help.
-open main
+open Capital.EventProfiler
+open System
+open FSharp.Data
+open FSharp.Charting
+open MathNet.Numerics.Statistics
+open Capital.Extensions
+open Capital.DataStructures
 open Agents
+open Capital.Engine
+open Capital.Charting
 open System
 
 [<EntryPoint>]
