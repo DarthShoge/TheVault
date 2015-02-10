@@ -126,7 +126,7 @@ type ``event profiler should``() =
                             ]
         let dates = [|dt(2012,01,10); dt(2012,01,11);dt(2012,01,12); dt(2012,01,13); dt(2012,01,14) |]
         let profiler = EventProfiler("LSX",fun sym mkt -> sym < -0.35 && mkt > 0.6 )
-        let result = profiler.ProfileAll stox dates 1
+        let result = profiler.ProfileAll( stox ,dates ,1)
         let ser = result.Columns.[0]
         let actual = result |> Frame.getCol(0) |> Series.map(fun k (v:double) -> Math.Round(v,3))
         actual |> should equal ( series [-1 => -0.097; 0 => -0.357; 1 => 0.056])
@@ -140,8 +140,20 @@ type ``event profiler should``() =
                             ]
         let dates = [|dt(2012,01,10); dt(2012,01,11);dt(2012,01,12); dt(2012,01,13); dt(2012,01,14) |]
         let profiler = EventProfiler("LSX",fun sym mkt -> sym < -0.35 && mkt > 0.6 )
-        let result = profiler.ProfileAll stox dates 1
+        let result = profiler.ProfileAll (stox ,dates ,1)
         let ser = result.Columns.[0]
         let actual = result |> Frame.getCol(0) |> Series.map(fun k (v:double) -> Math.Round(v,3))
 
         actual |> should equal ( series [-1 => -0.097; 0 => -0.357; 1 => 0.056])
+
+
+    [<Test>]
+    member given.``event profiler is run market nuetral then market is not factored into calculations``() =
+        let stox = frame [ "LUX" => series [dt(2012,01,09) => 3.1;dt(2012,01,10) => 2.8; dt(2012,01,11) => 2.8;dt(2012,01,12) => 1.8; dt(2012,01,13) => 1.9; dt(2012,01,14) => 1.89 ]
+                           "LSX" => series [dt(2012,01,09) => 3.1;dt(2012,01,10) => 2.8; dt(2012,01,11) => 2.8;dt(2012,01,12) => 1.8; dt(2012,01,13) => 1.9; dt(2012,01,14) => 1.89 ]
+                            ]
+        let dates = [|dt(2012,01,10); dt(2012,01,11);dt(2012,01,12); dt(2012,01,13); dt(2012,01,14) |]
+        let profiler = EventProfiler("LSX",fun sym mkt -> sym < -0.35  )
+        let result = profiler.ProfileAll (stox ,dates ,1)
+
+        result.ColumnCount |> should equal 1

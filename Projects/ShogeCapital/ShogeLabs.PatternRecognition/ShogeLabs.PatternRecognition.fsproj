@@ -5,13 +5,13 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>e5c77a99-9cb6-475f-a94c-9246a4d76993</ProjectGuid>
+    <ProjectGuid>42cbcbec-d986-48ed-b620-f818e0bdbd62</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Capital.Main.Tests</RootNamespace>
-    <AssemblyName>Capital.Main.Tests</AssemblyName>
+    <RootNamespace>ShogeLabs.PatternRecognition</RootNamespace>
+    <AssemblyName>ShogeLabs.PatternRecognition</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
-    <Name>Capital.Main.Tests</Name>
+    <Name>ShogeLabs.PatternRecognition</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +21,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Debug\Capital.Main.Tests.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\ShogeLabs.PatternRecognition.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,56 +30,38 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Release\Capital.Main.Tests.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\ShogeLabs.PatternRecognition.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Deedle">
-      <HintPath>..\packages\Deedle.1.0.6\lib\net40\Deedle.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FSharp.Data">
-      <HintPath>..\packages\FSharp.Data.2.0.14\lib\net40\FSharp.Data.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FsUnit.NUnit">
-      <HintPath>..\packages\FsUnit.1.3.0.1\Lib\Net40\FsUnit.NUnit.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MathNet.Numerics">
-      <HintPath>..\packages\MathNet.Numerics.3.3.0\lib\net40\MathNet.Numerics.dll</HintPath>
+    <Reference Include="FSharp.Charting">
+      <HintPath>..\packages\FSharp.Charting.0.90.9\lib\net40\FSharp.Charting.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    <Reference Include="MSDN.FSharpChart">
+      <HintPath>..\packages\MSDN.FSharpChart.dll.0.60\lib\MSDN.FSharpChart.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FrameOpsShould.fs" />
+    <Compile Include="PatternRecogniser.fs" />
+    <None Include="Script.fsx" />
+    <Compile Include="PatternRunner.fs" />
     <None Include="packages.config" />
-    <None Include="App.config" />
-    <Compile Include="FsUnitExtensions.fs" />
-    <Compile Include="EventStudyTests.fs" />
-    <Compile Include="PatternRecogniserTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Capital.Main\Capital.Main.fsproj">
       <Name>Capital.Main</Name>
       <Project>{9c117932-398e-4563-935f-4b5e1f04ec82}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\ShogeLabs.PatternRecognition\ShogeLabs.PatternRecognition.fsproj">
-      <Name>ShogeLabs.PatternRecognition</Name>
-      <Project>{42cbcbec-d986-48ed-b620-f818e0bdbd62}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>

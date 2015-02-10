@@ -77,6 +77,11 @@
       <Project>{9c117932-398e-4563-935f-4b5e1f04ec82}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\ShogeLabs.PatternRecognition\ShogeLabs.PatternRecognition.fsproj">
+      <Name>ShogeLabs.PatternRecognition</Name>
+      <Project>{42cbcbec-d986-48ed-b620-f818e0bdbd62}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>

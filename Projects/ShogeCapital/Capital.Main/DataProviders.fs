@@ -43,3 +43,8 @@ type YahooDataProvider() =
                 (createEmptyTicks startdate []) |> List.toArray
 
     member x.GetStockData sym startdate enddate = getStockData sym startdate enddate
+
+
+//
+//type GoogleTickDataProvider() =
+    
