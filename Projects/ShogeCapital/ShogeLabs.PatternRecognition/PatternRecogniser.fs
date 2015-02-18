@@ -1,5 +1,6 @@
 ﻿module ShogeLabs.PatternRecognition
 open Capital.Extensions
+open MathNet.Numerics.Statistics
 open System
 
 let calculateChange strt curnt =
@@ -9,6 +10,7 @@ type PatternStrategy =
     |PointByPoint
     |TopAnchored
     |BottomAnchored
+
 
 type Pattern = {PatternArray : double array; Outcome : double option ; PredictedOutcome : double option}
                 with
@@ -21,7 +23,16 @@ type Pattern = {PatternArray : double array; Outcome : double option ; Predicted
                                         |> Array.zip p2.PatternArray 
                                         |> Array.map (fun (x,y) -> 1.0 - abs(calculateChange x y))
                             {PatternArray  = diffs; Outcome = Some(diffs |> Array.average); PredictedOutcome = None}
+                    member x.Correlate p2 = MathNet.Numerics.Statistics.Correlation.Pearson(x.PatternArray,p2.PatternArray)
+                        
 
+type PatternSummary = {Patterns: Pattern array; MainPattern : Pattern; }    
+                        with
+                            member x.PossibilityOfRise = 
+                                let allValues =[|yield x.MainPattern; for p in x.Patterns -> p |]
+                                (double)(allValues |> Array.filter(fun x -> x.Outcome.IsSome && x.Outcome.Value > 0.)).Length / (double)allValues.Length
+                            member x.AverageOutcomes =
+                                 x.Patterns |> Seq.averageBy(fun x -> if x.Outcome.IsSome then x.Outcome.Value else 0.0)
 
 type PatternRecogniser(lookback, lookforward,calcStrategy ) =
 
@@ -48,7 +59,7 @@ type PatternRecogniser(lookback, lookforward,calcStrategy ) =
         |> Seq.toArray
 
     let (|Safe|Unsafe|) (x: double array) = 
-        let endIndex = (lookback + lookforward)
+        let endIndex = (lookback + lookforward) - 1
         if lookforward > 0 && x.Length > endIndex then
             Safe
         else

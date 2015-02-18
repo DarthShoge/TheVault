@@ -8,13 +8,14 @@ open MathNet.Numerics.Statistics
 open Capital.Extensions
 open Capital.DataStructures
 open System.Drawing
-open Agents
+open Capital.Agents
 open Capital.Engine
 open Capital.Charting
 open ShogeLabs.PatternRecognition
 open Capital.DataProviders
 open System.Windows.Forms.DataVisualization.Charting
 open System
+open ShogeLabs.Patterns
 
 
 let runEventStudy() = 
@@ -51,49 +52,18 @@ let runEventStudy() =
 
 [<EntryPoint>]
 let main argv = 
-    let aapl = YahooDataProvider().GetStockData "EA" (DateTime(2001,01,01)) (DateTime(2014,01,01)) 
-    let lookback = 20
-    let look4wrd = 10
-    let look4wrdCalc = 10
-    let patternFinder = PatternRecogniser(lookback,look4wrdCalc,TopAnchored)
-    let patterns = aapl |> Seq.map(fun x -> x.AC) 
-                        |> Seq.windowed(lookback + look4wrd + 1) 
-                        |> Seq.map(fun x -> patternFinder.ToPattern x)
+    let snP = getSnP500Symbols()
+    let batchSize = 70
+    let snpSymbols = "SPX"::(snP |> Array.map(fun x -> x.Ticker) |> Seq.toList)
+    let dates = {Start = (DateTime(2001,01,01)); End = (DateTime(2014,01,01))}
+    //let sdata = loadStocksParallel (snpSymbols |> List.toArray) dates.Start dates.End batchSize
+
+    let run = PatternRunner(YahooDataProvider().GetStockData)
+    let allValues = snpSymbols 
+                        |> Seq.map(fun sym -> run.Run(20,15,0.5,dates,sym) )
+                        |> Seq.filter(fun x -> x.PossibilityOfRise > 0.6)
                         |> Seq.toArray
-
-    let cp = patterns.[patterns.Length - 1]
-
-    let bestPatterns = patterns.[..patterns.Length - 1]  
-                        |> Array.mapi(fun i x -> (i,cp % x))
-                        |> Array.filter(fun (i,x) -> x.Outcome.IsSome && x.Outcome.Value >= 0.60)
-
-    let similars = (bestPatterns |> Array.map(fun (i,x) -> patterns.[i]))
-
-    let allValues =[|
-            yield cp
-            for p in similars -> p
-        |]
-
-    let possibilityOfpositive = (double)(allValues |> Array.filter(fun x -> x.Outcome.IsSome && x.Outcome.Value > 0.)).Length / (double)allValues.Length
-
-    let outcomeXPoint = (lookback + 1)
-    let chart = Chart.Combine[
-                            yield Chart.Line(cp.PatternArray,Name="main")
-                                  |> Chart.WithSeries.Style(Color= Color.Black,BorderWidth = 5)
-                            yield   Chart.Point([(outcomeXPoint + 1,cp.Outcome.Value)])
-                                    |> Chart.WithSeries.Marker(Style= MarkerStyle.Circle,Size=8,Color = if cp.Outcome.Value < 0. then Color.BurlyWood else Color.Blue)
-                            for s in similars do
-                                yield Chart.Line(s.PatternArray)
-                                yield Chart.Point([(outcomeXPoint,s.Outcome.Value)])
-                                        |> Chart.WithSeries.Marker(Style= MarkerStyle.Circle,Size = 8,Color = if s.Outcome.Value < 0. then Color.FromArgb(100, 255, 0, 0) else Color.FromArgb(100, 0, 255, 0)
-                                        ,BorderWidth = 3 )
-                        ]
-                        |> Chart.WithTitle(sprintf "Probability of positive movement = %f" possibilityOfpositive)
-
-
-// Define your library scripting code here
-
-
+    let chart = run.ChartPatterns(20,15,0.5,dates,"AMZN")
 
     0 // return an integer exit code
 

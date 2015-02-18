@@ -1,9 +1,9 @@
-﻿module Agents
+﻿module Capital.Agents
 open Capital.Engine
 open Capital.Extensions
-open Deedle
 open System
 open Capital.DataStructures
+open Deedle
 
 type Agent<'T> = MailboxProcessor<'T>
 type AgentAction = 

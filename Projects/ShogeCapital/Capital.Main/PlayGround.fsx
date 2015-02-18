@@ -21,7 +21,7 @@ open Capital.DataStructures
 open System
 open Capital.Charting
 open Capital.EventProfiler
-open Agents
+open Capital.Agents
 open System.Drawing
 open Capital.Engine
 open FSharp.Data
