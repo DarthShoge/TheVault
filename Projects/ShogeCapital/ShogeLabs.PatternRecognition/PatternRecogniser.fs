@@ -30,9 +30,17 @@ type PatternSummary = {Patterns: Pattern array; MainPattern : Pattern; }
                         with
                             member x.PossibilityOfRise = 
                                 let allValues =[|yield x.MainPattern; for p in x.Patterns -> p |]
-                                (double)(allValues |> Array.filter(fun x -> x.Outcome.IsSome && x.Outcome.Value > 0.)).Length / (double)allValues.Length
+                                if allValues.Length < 2 then
+                                    0.0
+                                else
+                                    match x.MainPattern.Outcome with
+                                    | Some(_) ->(double)(allValues |> Array.filter(fun x -> x.Outcome.IsSome && x.Outcome.Value > 0.)).Length / (double)allValues.Length
+                                    | None ->(double)(x.Patterns |> Array.filter(fun x -> x.Outcome.IsSome && x.Outcome.Value > 0.)).Length / (double)allValues.Length
                             member x.AverageOutcomes =
-                                 x.Patterns |> Seq.averageBy(fun x -> if x.Outcome.IsSome then x.Outcome.Value else 0.0)
+                                if x.Patterns.Length = 0 then
+                                    0.0
+                                else
+                                    x.Patterns |> Seq.averageBy(fun x -> if x.Outcome.IsSome then x.Outcome.Value else 0.0)
 
 type PatternRecogniser(lookback, lookforward,calcStrategy ) =
 
@@ -82,5 +90,4 @@ type PatternRecogniser(lookback, lookforward,calcStrategy ) =
             let predictedOc = match ar with 
                           |Safe -> Some(calcPointByPoint ar.[(lookback - 1)..(lookback + lookforward - 1)] |> Array.average) 
                           | Unsafe -> None
-            printfn "%A outcome -> {%A} \n" pat outcome 
             {PatternArray = pat; Outcome = outcome; PredictedOutcome = predictedOc}

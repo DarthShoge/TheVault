@@ -58,12 +58,22 @@ let main argv =
     let dates = {Start = (DateTime(2001,01,01)); End = (DateTime(2014,01,01))}
     //let sdata = loadStocksParallel (snpSymbols |> List.toArray) dates.Start dates.End batchSize
 
-    let run = PatternRunner(YahooDataProvider().GetStockData)
-    let allValues = snpSymbols 
-                        |> Seq.map(fun sym -> run.Run(20,15,0.5,dates,sym) )
-                        |> Seq.filter(fun x -> x.PossibilityOfRise > 0.6)
-                        |> Seq.toArray
+    let run = PatternRecognitionStrategy(YahooDataProvider().GetStockData)
+//    let allValues = snpSymbols 
+//                        |> Seq.map(fun sym -> 
+//                            let symdata : Tick array = YahooDataProvider().GetStockData sym dates.Start dates.End
+//                            run.Run(20,15,0.5,symdata |> Seq.toList) )
+//                        |> Seq.filter(fun x -> x.PossibilityOfRise > 0.6)
+//                        |> Seq.toArray
     let chart = run.ChartPatterns(20,15,0.5,dates,"AMZN")
-
+    let config =  { Lookback = 20;
+                    LookForward =10;    
+                    Tolerance = 0.5;
+                    GenerateOrderOn = fun pttrn -> pttrn.PossibilityOfRise > 0.3;
+                    Range = dates; 
+                    Period = Day;
+                    OrderSize = 100. }
+    let strategy = PatternRecognitionStrategy(YahooDataProvider().GetStockData)
+    let backtest = strategy.WalkForward(config,"AMZN")
     0 // return an integer exit code
 
