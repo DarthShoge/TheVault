@@ -13,8 +13,10 @@ open Capital.Engine
 open Capital.Charting
 open ShogeLabs.PatternRecognition
 open Capital.DataProviders
+open Deedle
 open System.Windows.Forms.DataVisualization.Charting
 open System
+open System.Diagnostics
 open ShogeLabs.Patterns
 
 
@@ -69,11 +71,13 @@ let main argv =
     let config =  { Lookback = 20;
                     LookForward =10;    
                     Tolerance = 0.5;
-                    GenerateOrderOn = fun pttrn -> pttrn.PossibilityOfRise > 0.3;
+                    GenerateOrderOn = fun pttrn -> pttrn.PossibilityOfRise > 0.7;
                     Range = dates; 
                     Period = Day;
                     OrderSize = 100. }
     let strategy = PatternRecognitionStrategy(YahooDataProvider().GetStockData)
-    let backtest = strategy.WalkForward(config,"AMZN")
+    let timer = Diagnostics.Stopwatch.StartNew()
+    let backtest = strategy.WalkForward(config,"AMZN") |> Series.filter(fun k v -> v.IsActiveOrder)
+    printf "took %A seconds" timer.Elapsed.TotalSeconds 
     0 // return an integer exit code
 

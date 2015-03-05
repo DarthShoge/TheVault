@@ -22,6 +22,11 @@ type PatternStrategyConfig =
     }
     
 type PatternRecognitionStrategy(dataProvider) =
+    
+    let rec aggregateOrders orders =
+        match orders with
+        |h::[] -> h
+        |h::t -> AggregateOrder(h,aggregateOrders t)
 
     member x.Run(lookback,look4wrd,tolerance,symdata :Tick list) =
         let patternFinder = PatternRecogniser(lookback,look4wrd,TopAnchored)
@@ -51,8 +56,6 @@ type PatternRecognitionStrategy(dataProvider) =
         let chart = Chart.Combine[
                                 yield Chart.Line(cp.PatternArray,Name="main")
                                       |> Chart.WithSeries.Style(Color= Color.Black,BorderWidth = 5)
-        //                        yield   Chart.Point([(outcomeXPoint + 1,cp.Outcome.Value)])
-        //                                |> Chart.WithSeries.Marker(Style= MarkerStyle.Circle,Size=8,Color = if cp.Outcome.Value < 0. then Color.BurlyWood else Color.Blue)
                                 for s in similarPatterns do
                                     yield Chart.Line(s.PatternArray)
                                     yield Chart.Point([(outcomeXPoint,s.Outcome.Value)])
@@ -61,12 +64,8 @@ type PatternRecognitionStrategy(dataProvider) =
                             ]
                             |> Chart.WithTitle(sprintf "Probability of positive movement = %f" result.PossibilityOfRise)
         chart
-
-    member my.WalkForward(config,symbol : string) =
-        let dateRange = config.Range
-        let data = dataProvider symbol dateRange.Start dateRange.End 
+    member my.WalkForward(config,data) =
         let dates = data |> Seq.map(fun x -> x.Date) |> Seq.sort
-
         let walkthrough d =
             let vals = data |> Seq.filter(fun x -> x.Date <= d) |> Seq.sortBy(fun x -> x.Date) |> Seq.toList
             if(vals.Length > config.Lookback) then
@@ -89,7 +88,7 @@ type PatternRecognitionStrategy(dataProvider) =
         let rawTrades = seq [
                             for period in dates do 
                                 let futureTrade,order = walkthrough period
-                                if (snd futureTrade) <> NoOrder && (fst futureTrade) <= dateRange.End then
+                                if (snd futureTrade) <> NoOrder && (fst futureTrade) <= config.Range.End then
                                     yield futureTrade
                                 yield (period,order)
                             ] 
@@ -97,14 +96,18 @@ type PatternRecognitionStrategy(dataProvider) =
         let conditionedTrades = 
             rawTrades |> Seq.groupBy(fun (date,trade) -> date)
             |> Seq.map(fun (date ,allTrades) -> 
-                            let sumOfTrades = allTrades |> Seq.sumBy(fun (d,ord) ->  
-                                            match ord with |NoOrder -> 0. |Buy(v) -> v |Sell(v) -> -v )
-                            let result = match sumOfTrades with
-                                        | v when v > 1. -> Buy(v)| v when v < -1. -> Sell(abs(v)) 
-                                        | v when (allTrades |> Seq.exists(fun (x, y) -> y.IsActiveOrder)) -> Buy(0.0)
-                                        | _ -> NoOrder
+                            let ordrsOnly = allTrades|> Seq.map snd |> Seq.filter(fun x -> x.IsActiveOrder)
+                            let result = 
+                                if(allTrades |> Seq.length = 1) then
+                                    snd (allTrades |> Seq.nth 0)
+                                else
+                                    aggregateOrders (ordrsOnly |> Seq.toList)
                             (date,result))
 
         series [for v in conditionedTrades -> v] |> Series.sortByKey
 
+    member my.WalkForward(config,symbol : string) =
+        let dateRange = config.Range
+        let data = dataProvider symbol dateRange.Start dateRange.End 
+        my.WalkForward(config,data)
            
