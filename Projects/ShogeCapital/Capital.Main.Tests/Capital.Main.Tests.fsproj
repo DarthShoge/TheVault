@@ -68,12 +68,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestHelpers\TestHelpers.fs" />
     <Compile Include="FrameOpsShould.fs" />
     <None Include="packages.config" />
     <None Include="App.config" />
     <Compile Include="FsUnitExtensions.fs" />
     <Compile Include="EventStudyTests.fs" />
     <Compile Include="PatternRecogniserTests.fs" />
+    <Compile Include="BacktestTests\BackTestTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Capital.Main\Capital.Main.fsproj">
@@ -81,8 +83,8 @@
       <Project>{9c117932-398e-4563-935f-4b5e1f04ec82}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\ShogeLabs.PatternRecognition\ShogeLabs.PatternRecognition.fsproj">
-      <Name>ShogeLabs.PatternRecognition</Name>
+    <ProjectReference Include="..\ShogeLabs.PatternRecognition\ShogeLabs.Strategies.fsproj">
+      <Name>ShogeLabs.Strategies</Name>
       <Project>{42cbcbec-d986-48ed-b620-f818e0bdbd62}</Project>
       <Private>True</Private>
     </ProjectReference>

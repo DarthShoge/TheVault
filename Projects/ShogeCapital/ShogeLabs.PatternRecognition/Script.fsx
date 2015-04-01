@@ -4,13 +4,15 @@
 #r "System.Core.dll"
 #r @"D:\Code\Repos\TheVault\Projects\ShogeCapital\packages\MathNet.Numerics.3.5.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\MathNet.Numerics.dll"
 #r @"D:\Code\Repos\TheVault\Projects\ShogeCapital\ShogeLabs.PatternRecognition\bin\Debug\Capital.Main.dll"
-#r "D:/Code/Repos/TheVault/Projects/ShogeCapital/packages/FSharp.Charting.0.90.7/lib/net40/FSharp.Charting.dll"
+#r "D:/Code/Repos/TheVault/Projects/ShogeCapital/packages/FSharp.Charting.0.90.9/lib/net40/FSharp.Charting.dll"
 #r "D:/Code/Repos/TheVault/Projects/ShogeCapital/packages/FSharp.Data.2.0.14/lib/net40/FSharp.Data.dll"
 #r "D:/Code/Repos/TheVault/Projects/ShogeCapital/packages/Deedle.1.0.6/lib/net40/Deedle.dll"
 #r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Windows.Forms.DataVisualization.dll"
-#load "PatternRecogniser.fs"
-#load "PatternRunner.fs"
-#load "../packages/FSharp.Charting.0.90.7/FSharp.Charting.fsx"
+#r @"D:\Code\Repos\TheVault\Projects\ShogeCapital\packages\FSharp.Collections.ParallelSeq.1.0.2\lib\net40\FSharp.Collections.ParallelSeq.dll"
+
+#load @"D:\Code\Repos\TheVault\Projects\ShogeCapital\ShogeLabs.PatternRecognition\PatternRecognition\PatternRecogniser.fs"
+#load @"D:\Code\Repos\TheVault\Projects\ShogeCapital\ShogeLabs.PatternRecognition\PatternRecognition\PatternRunner.fs"
+#load "../packages/FSharp.Charting.0.90.9/FSharp.Charting.fsx"
 #load "../packages/Deedle.1.0.6/Deedle.fsx"
 
 open Capital.DataProviders

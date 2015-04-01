@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Performance2.psess = Performance2.psess
 	EndProjectSection
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShogeLabs.PatternRecognition", "ShogeLabs.PatternRecognition\ShogeLabs.PatternRecognition.fsproj", "{42CBCBEC-D986-48ED-B620-F818E0BDBD62}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShogeLabs.Strategies", "ShogeLabs.PatternRecognition\ShogeLabs.Strategies.fsproj", "{42CBCBEC-D986-48ED-B620-F818E0BDBD62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

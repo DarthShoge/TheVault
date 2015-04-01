@@ -1,4 +1,4 @@
-﻿module ShogeLabs.PatternRecognition
+﻿module ShogeLabs.Strategies.PatternRecognition
 open Capital.Extensions
 open MathNet.Numerics.Statistics
 open System

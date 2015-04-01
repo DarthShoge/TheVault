@@ -2,6 +2,7 @@
 open FSharp.Data
 open Capital.DataStructures
 open System
+open Deedle
 
 type StockData = CsvProvider<"D:\\Code\Repos\\TheVault\\Projects\\ShogeCapital\\Capital.Main\\table.csv">
 type BlackListedException(sym,why) =
@@ -42,7 +43,8 @@ type YahooDataProvider() =
                 printf "%A did not have data \n" sym
                 (createEmptyTicks startdate []) |> List.toArray
 
-    member x.GetStockData sym startdate enddate = getStockData sym startdate enddate
+    member x.GetStockData sym startdate enddate = 
+            getStockData sym startdate enddate
 
 
 //

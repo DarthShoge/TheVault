@@ -105,6 +105,7 @@
     <Compile Include="Charting.fs" />
     <Compile Include="EventProfiler.fs" />
     <None Include="PlayGround.fsx" />
+    <Compile Include="Backtester\Backtester.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>

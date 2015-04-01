@@ -11,7 +11,7 @@
     <AssemblyName>ShogeLabs.PatternRecognition</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
-    <Name>ShogeLabs.PatternRecognition</Name>
+    <Name>ShogeLabs.Strategies</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,6 +39,10 @@
     </Reference>
     <Reference Include="FSharp.Charting">
       <HintPath>..\packages\FSharp.Charting.0.90.9\lib\net40\FSharp.Charting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharp.Collections.ParallelSeq">
+      <HintPath>..\packages\FSharp.Collections.ParallelSeq.1.0.2\lib\net40\FSharp.Collections.ParallelSeq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.Data">
@@ -71,10 +75,10 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PatternRecogniser.fs" />
     <None Include="Script.fsx" />
-    <Compile Include="PatternRunner.fs" />
     <None Include="packages.config" />
+    <Compile Include="PatternRecognition\PatternRecogniser.fs" />
+    <Compile Include="PatternRecognition\PatternRunner.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Capital.Main\Capital.Main.fsproj">

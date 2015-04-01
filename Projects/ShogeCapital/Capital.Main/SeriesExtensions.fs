@@ -14,6 +14,10 @@ module Seq =
 
 
 module List =
+
+    let tryHead (this : _ list) =
+        this |> List.tryPick Some
+
     let  slide (n : int) (s : _ list) =
         let rec buildWindows v sequence acc = 
             match sequence with

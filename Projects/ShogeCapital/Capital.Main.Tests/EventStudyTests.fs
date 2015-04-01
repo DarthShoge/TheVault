@@ -6,6 +6,8 @@ open Deedle
 open MathNet.Numerics.Statistics
 open Capital.Engine
 open Capital.EventProfiler
+open Capital.Main.Tests.TestHelpers
+
 
 [<TestFixture>]
 type ``event profiler should``() =

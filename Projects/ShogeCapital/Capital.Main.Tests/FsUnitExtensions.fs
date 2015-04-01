@@ -1,7 +1,6 @@
 ﻿module FsUnitExtensions
 
 open NUnit.Framework
-open ShogeLabs.PatternRecognition
 open System
 open FsUnit
 

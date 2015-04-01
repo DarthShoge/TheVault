@@ -73,4 +73,13 @@ let loadStocksParallel symbols startDate endDate batchSize =
     |> Frame.ofColumns
     |> Frame.fillMissing(Direction.Backward)
 
+let loadStocksParallelWith selector symbols startDate endDate batchSize  =
+    let completed = getStockDataParallel symbols startDate endDate batchSize
+    [for (ticker,data) in completed ->
+        ticker => ((data |> toSeries (selector)) |> Series.sortByKey)
+    ]
+    |> Frame.ofColumns
+    |> Frame.fillMissing(Direction.Backward)
+
+
 let x =a.PostAndReply(fun replyChannel -> Get replyChannel)
