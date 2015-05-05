@@ -3,7 +3,6 @@ open System
 open System.IO
 open System.Net
 open DataStructures
-open LumenWorks.Framework.IO.Csv
 
 
 
@@ -63,29 +62,10 @@ type StockDataProvider() =
     let getSymbolFor(symbol: string) (fromDate: DateTime) (toDate: DateTime) = 
         let pageToRequest = sprintf "https://ichart.finance.yahoo.com/table.csv?s=%s&a=%i&b=%i&c=%i&d=%i&e=%i&f=%i&g=d&ignore=.csv" symbol (fromDate.Month - 1) fromDate.Day fromDate.Year (toDate.Month - 1) toDate.Day toDate.Year
         let req = HttpWebRequest.Create(pageToRequest)
-        try
-            let response = req.GetResponse() :?> HttpWebResponse
-            let stream = new StreamReader(response.GetResponseStream())
-            use csv = new CsvReader(stream,true)
-        
-            let fcount = csv.FieldCount
-            [while(csv.ReadNextRecord()) do
-                                let row = {Hi = decimal csv.[2];
-                                            Low = decimal csv.[3];
-                                            Open = decimal csv.[1];
-                                            Close = decimal csv.[4];
-                                            Volume = decimal csv.[5];
-                                            AdjClose = decimal csv.[6]}
-                            
-                                let datedRow = {Start = DateTime.Parse csv.[0]; Value = row}
-                                yield datedRow]
-            |> List.filter(fun x -> x.Start <= toDate)
-            |> List.toSeq
-        with
-        | :? WebException -> [] |> List.toSeq
+        []
 
     interface IStockDataProvider with
-        member x.GetSymbolData(sym) = getSymbolFor sym (DateTime(1986,02,13)) DateTime.Now
-        member x.GetSymbolDataForDates(sym) frm too = getSymbolFor sym frm too
+        member x.GetSymbolData(sym) = getSymbolFor sym (DateTime(1986,02,13)) DateTime.Now |> List.toSeq
+        member x.GetSymbolDataForDates(sym) frm too = getSymbolFor sym frm too |> List.toSeq
 
     

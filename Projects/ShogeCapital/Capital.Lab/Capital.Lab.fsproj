@@ -54,6 +54,18 @@
       <HintPath>..\packages\MathNet.Numerics.3.2.3\lib\net40\MathNet.Numerics.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\MongoDB.Bson.2.0.0\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\packages\MongoDB.Driver.2.0.0\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.0.0\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
@@ -74,6 +86,11 @@
     <None Include="PlayGround.fsx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Capital.Data\Capital.Data.csproj">
+      <Name>Capital.Data</Name>
+      <Project>{3ea830d6-0c0f-427a-bfe4-b680cbee5a07}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Capital.Main\Capital.Main.fsproj">
       <Name>Capital.Main</Name>
       <Project>{9c117932-398e-4563-935f-4b5e1f04ec82}</Project>

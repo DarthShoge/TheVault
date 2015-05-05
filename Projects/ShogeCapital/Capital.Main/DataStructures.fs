@@ -1,6 +1,7 @@
 ﻿module Capital.DataStructures
 open System
 [<StructuredFormatDisplay("{AsString}")>]
+type IndexConstituents = {Id : int ; Date:DateTime; Constituents: string seq; Index : string}
 type Tick = {Date:DateTime ; O:double;H:double;L:double;C:double;AC:double; V:double}
     with 
     member x.AsString = sprintf "Date : %A AC : %f" x.Date x.AC

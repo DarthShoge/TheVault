@@ -20,7 +20,12 @@ open System
 open System.Diagnostics
 open Capital.Main.MarketSimulation
 open ShogeLabs.Strategies.Patterns
+open Capital.Data
 
+let getSnP500SymbolsByDate date = 
+    Capital.Data.Query.IndexConstituentRepository().GetIndexConstituent("S&P500",date).Constituents
+    |> Seq.map(fun x -> {Ticker= x; CompanyName =x})
+    |> Seq.toArray
 
 let runEventStudy() = 
     let startDate = new DateTime(2012, 01, 01)
@@ -111,10 +116,10 @@ let patts() =
 
 [<EntryPoint>]
 let main argv = 
-    let snP = getSnP500Symbols()
+    let dates = {Start = (DateTime(2012,01,01)); End = (DateTime(2014,01,01))}
+    let snP = getSnP500SymbolsByDate dates.Start
     let batchSize = 70
     let snpSymbols = "SPX"::(snP |> Array.map(fun x -> x.Ticker) |> Seq.toList)
-    let dates = {Start = (DateTime(2006,01,01)); End = (DateTime(2010,01,01))}
     //let sdata = loadStocksParallel (snpSymbols |> List.toArray) dates.Start dates.End batchSize
     let random = Random()
     let run = PatternRecognitionStrategy(YahooDataProvider().GetStockData)
@@ -126,15 +131,15 @@ let main argv =
 //                        |> Seq.toArray
 //    let chart = run.ChartPatterns(20,15,0.5,dates,"AMZN")
 //    patts().ShowChart() |> ignore
-    let config =  { Lookback = 30;
+    let config =  { Lookback = 20;
                     LookForward = 5;    
-                    Tolerance = 0.1;
+                    Tolerance = 0.7;
                     GenerateOrderOn = fun pttrn -> pttrn.AverageOutcomes > 0.00000005;
                     Range = dates; 
                     Period = Capital.DataStructures.Day;
                     OrderSize = 100. }
     let backtster = BackTester()
-    let randomUniverse = snpSymbols |> Seq.sortBy(fun x -> random.Next()) |> Seq.take 5 |> Seq.toArray
+    let randomUniverse = snpSymbols |> Seq.sortBy(fun x -> random.Next()) |> Seq.take 500 |> Seq.toArray
     let universe = [|"AAPL";"MSFT";"ADBE";"MMM";"AMZN";"BAC";"CSCO";"EBAY";"EA";"F";"ORCL";"PEP";"RL";"RHT";"SBUX";"COH";"DAL"|]
     let data = loadStocksParallelWith (fun x -> x) randomUniverse config.Range.Start config.Range.End 7 
     printf "all data loaded!!!"

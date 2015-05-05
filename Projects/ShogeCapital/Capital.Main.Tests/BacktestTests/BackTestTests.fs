@@ -56,6 +56,7 @@ type BacktesterTests() =
                                         (dt 3. )=> 50.;(dt 4. )=> 50.]
         results |> should (equalWithToleranceOf 0.000001) expectedResults
 
+
     [<Test>]
     member given.``several orders are executed correct amounts of orders held ``() =
       //given
@@ -162,6 +163,28 @@ type BacktesterTests() =
         //then
         let expectedResults = series [(dt 0. )=> 10000.;(dt 1. )=> 9000.;
                             (dt 2. )=> 8000.;(dt 3. )=> 8000.;(dt 4. )=>  8000.
+                             ]
+        results |> should (equalWithToleranceOf 0.000001) expectedResults
+
+
+    [<Test>]
+    member given.```a stock does not trade for a day then when owned cashflow is calculated most recent available stock price is used in calculation``() =
+        //given
+        let orders =frame [
+                            "AAA" => (series [(dt 0. )=> 0.;(dt 1. )=> 100.;(dt 2. )=> 100.;  (dt 3. )=> 100.;(dt 4. )=> 100.;(dt 5. )=> 100.;(dt 6. )=> 100.;(dt 7. )=> 0.])
+                            "BBB" => (series [(dt 0. )=> 0.;(dt 1. )=> 0.;  (dt 2. )=> 100.;(dt 3. )=> 100.;(dt 4. )=> 100.;(dt 5. )=> 100.;(dt 6. )=> 100.;(dt 7. )=> 0.])
+                            ]
+        let data = BackTester.ticksToDataFrame 
+                    (seq [
+                            "AAA" =>  seq [tck 0. 10. (dt 0. );tck 0. 10. (dt 1. );tck 0. 10. (dt 2. );tck 0. 10. (dt 3. );tck 0. 20. (dt 4. );tck 0. 10. (dt 7. )];
+                            "BBB" =>  seq [tck 0. 10. (dt 0. );tck 0. 10. (dt 1. );tck 0. 10. (dt 2. );tck 0. 10. (dt 3. );tck 0. 20. (dt 4. );tck 0. 10. (dt 7. )];
+                            "CCC" =>  seq [tck 0. 50. (dt 0. );tck 0. 50. (dt 1. );tck 0. 50. (dt 2. );tck 0. 50. (dt 3. );tck 0. 60. (dt 4. );tck 0. 50. (dt 7. )];
+                             ])
+        //when
+        let results = backtester.GetOwnedCash( orders ,data)
+        //then
+        let expectedResults = series [(dt 0. )=> 0.;(dt 1. )=> 1000.;
+                            (dt 2. )=> 2000.;(dt 3. )=> 2000.;(dt 4. )=>  4000.;(dt 5. )=>  4000.;(dt 6. )=>  4000.;(dt 7. )=>  0.
                              ]
         results |> should (equalWithToleranceOf 0.000001) expectedResults
 

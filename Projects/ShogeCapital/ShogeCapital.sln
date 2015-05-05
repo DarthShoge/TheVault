@@ -17,6 +17,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShogeLabs.Strategies", "ShogeLabs.PatternRecognition\ShogeLabs.Strategies.fsproj", "{42CBCBEC-D986-48ED-B620-F818E0BDBD62}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data population", "Data population", "{60101045-BE92-40AD-A58F-F7C4BC6735F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IndexConstituents", "IndexConstituents", "{28D8DB9A-F1B8-4AAD-B501-EDD2A0BF1E8A}"
+	ProjectSection(SolutionItems) = preProject
+		population_script.js = population_script.js
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capital.Data", "Capital.Data\Capital.Data.csproj", "{3EA830D6-0C0F-427A-BFE4-B680CBEE5A07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,9 +76,23 @@ Global
 		{42CBCBEC-D986-48ED-B620-F818E0BDBD62}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{42CBCBEC-D986-48ED-B620-F818E0BDBD62}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{42CBCBEC-D986-48ED-B620-F818E0BDBD62}.Release|x86.ActiveCfg = Release|Any CPU
+		{3EA830D6-0C0F-427A-BFE4-B680CBEE5A07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA830D6-0C0F-427A-BFE4-B680CBEE5A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA830D6-0C0F-427A-BFE4-B680CBEE5A07}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3EA830D6-0C0F-427A-BFE4-B680CBEE5A07}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3EA830D6-0C0F-427A-BFE4-B680CBEE5A07}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3EA830D6-0C0F-427A-BFE4-B680CBEE5A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA830D6-0C0F-427A-BFE4-B680CBEE5A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA830D6-0C0F-427A-BFE4-B680CBEE5A07}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3EA830D6-0C0F-427A-BFE4-B680CBEE5A07}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3EA830D6-0C0F-427A-BFE4-B680CBEE5A07}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{60101045-BE92-40AD-A58F-F7C4BC6735F7} = {6001B25D-4744-452D-BC6A-7E4335F3ADE4}
+		{28D8DB9A-F1B8-4AAD-B501-EDD2A0BF1E8A} = {60101045-BE92-40AD-A58F-F7C4BC6735F7}
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true

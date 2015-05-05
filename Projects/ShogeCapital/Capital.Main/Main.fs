@@ -11,7 +11,8 @@ type SnPData = JsonProvider<"http://data.okfn.org/data/core/s-and-p-500-companie
 
 let private freeBase = FreebaseData.GetDataContext()
 let dt(y,m,d) = DateTime(y,m,d)
-let getStockData = dp.YahooDataProvider().GetStockData
+let globalDataProvider = dp.YahooDataProvider()
+let getStockData = globalDataProvider.GetStockData
 
 let getSnP500Symbols() = 
     SnPData.GetSamples()

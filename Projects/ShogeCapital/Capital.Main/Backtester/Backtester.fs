@@ -58,7 +58,8 @@ type BackTester() =
                                                 if(valueAtStep.IsSome) then
                                                     (ownd * valueAtStep.Value)
                                                 else
-                                                    0.)
+                                                    let closestValue = data.[sym] |> Series.filter(fun x t -> x <= tstep) |> Series.sort |> Series.lastValue
+                                                    (ownd * closestValue))
                                     |> Seq.sum
                     yield tstep => dailycash 
                ]
