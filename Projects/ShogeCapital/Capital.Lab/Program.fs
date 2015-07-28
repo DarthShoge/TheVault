@@ -20,12 +20,18 @@ open System
 open System.Diagnostics
 open Capital.Main.MarketSimulation
 open ShogeLabs.Strategies.Patterns
+open Capital.Main.BackTesting
 open Capital.Data
 
 let getSnP500SymbolsByDate date = 
     Capital.Data.Query.IndexConstituentRepository().GetIndexConstituent("S&P500",date).Constituents
     |> Seq.map(fun x -> {Ticker= x; CompanyName =x})
     |> Seq.toArray
+
+let getAllSymbols() = getSnP500SymbolsByDate DateTime.Now
+
+let getSnP500SymbolsByRange (dateRange : DateRange) = 
+    dateRange.SplitOutByYear() |> Seq.map(fun dt -> (dt,getSnP500SymbolsByDate dt))
 
 let runEventStudy() = 
     let startDate = new DateTime(2012, 01, 01)
@@ -116,54 +122,35 @@ let patts() =
 
 [<EntryPoint>]
 let main argv = 
-    let dates = {Start = (DateTime(2012,01,01)); End = (DateTime(2014,01,01))}
+    let dates = {Start = (DateTime(2010,01,01)); End = (DateTime(2015,01,01))}
     let snP = getSnP500SymbolsByDate dates.Start
-    let batchSize = 70
+//    let batchSize = 70
     let snpSymbols = "SPX"::(snP |> Array.map(fun x -> x.Ticker) |> Seq.toList)
     //let sdata = loadStocksParallel (snpSymbols |> List.toArray) dates.Start dates.End batchSize
     let random = Random()
     let run = PatternRecognitionStrategy(YahooDataProvider().GetStockData)
-//    let allValues = snpSymbols 
-//                        |> Seq.map(fun sym -> 
-//                            let symdata : Tick array = YahooDataProvider().GetStockData sym dates.Start dates.End
-//                            run.Run(20,15,0.5,symdata |> Seq.toList) )
-//                        |> Seq.filter(fun x -> x.PossibilityOfRise > 0.6) 
-//                        |> Seq.toArray
-//    let chart = run.ChartPatterns(20,15,0.5,dates,"AMZN")
-//    patts().ShowChart() |> ignore
+ 
     let config =  { Lookback = 20;
                     LookForward = 5;    
                     Tolerance = 0.7;
-                    GenerateOrderOn = fun pttrn -> pttrn.AverageOutcomes > 0.00000005;
+                    GenerateOrderOn = fun pttrn -> pttrn.AverageOutcomes > 0.00005;
                     Range = dates; 
                     Period = Capital.DataStructures.Day;
                     OrderSize = 100. }
     let backtster = BackTester()
-    let randomUniverse = snpSymbols |> Seq.sortBy(fun x -> random.Next()) |> Seq.take 500 |> Seq.toArray
+    let randomUniverse = snpSymbols |> Seq.sortBy(fun x -> random.Next()) |> Seq.take 20 |> Seq.toArray
     let universe = [|"AAPL";"MSFT";"ADBE";"MMM";"AMZN";"BAC";"CSCO";"EBAY";"EA";"F";"ORCL";"PEP";"RL";"RHT";"SBUX";"COH";"DAL"|]
     let data = loadStocksParallelWith (fun x -> x) randomUniverse config.Range.Start config.Range.End 7 
     printf "all data loaded!!!"
     let strategy = PatternRecognitionStrategy(YahooDataProvider().GetStockData)
-//    let amzn = YahooDataProvider().GetStockData "pep" config.Range.Start config.Range.End
     let timer = Diagnostics.Stopwatch.StartNew()
-    let backtest = data |> Frame.mapCols(fun x y-> strategy.WalkForward(config, y.As<Tick>().Values) )
-    let backtestOwned = backtest |> Frame.mapCols(fun x y-> backtster.GetOwnedOrders(y.As<Order>() ))
-//    let values = backtest.Keys |> Seq.map(fun x -> amzn |> Seq.tryFind(fun t -> t.Date = x))
-    let pricesAtClose = data |> Frame.mapCols(fun x y -> y.As<Tick>() |> Series.map(fun k v -> v.AC))
     let cash = 10000.
-    let cflow = backtster.GetBacktestCash( backtest, pricesAtClose,cash )
-    let ownedcflow = backtster.GetOwnedCash(backtestOwned,pricesAtClose)
-    let fullcflow = cflow + ownedcflow
-    let cashflows = frame ["Raw Cashflow" => cflow;"Owner Cashflow" => ownedcflow;"Full Cashflow" => fullcflow]
+    let results = Runner<PatternStrategyConfig>(strategy.WalkForward,config).RunBacktest data cash
+    let fullcflow = results.Cashflows.["Full Cashflow"]
 
     let chr = Chart.Line( fullcflow.Observations |>Seq.map(fun x -> x.Key => x.Value),Name= sprintf "returns %f" (ShogeLabs.Strategies.PatternRecognition.calculateChange cash (fullcflow.LastValue()))) 
     use form = new Form(Width=400, Height=300, Visible=true, Text="Hello charting")
     chr.ShowChart()
     System.Windows.Forms.Application.Run(form)
-
-    backtest.SaveCsv(@"D:\temp\backtest.csv")
-    backtestOwned.SaveCsv(@"D:\temp\backtestOwned.csv")
-    pricesAtClose.SaveCsv(@"D:\temp\pricesAtClose.csv")
-    cashflows.SaveCsv(@"D:\temp\cashflows.csv")
 
     0 // return an integer exit code

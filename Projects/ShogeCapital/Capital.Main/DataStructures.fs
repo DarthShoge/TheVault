@@ -1,5 +1,6 @@
 ﻿module Capital.DataStructures
 open System
+open Deedle
 [<StructuredFormatDisplay("{AsString}")>]
 type IndexConstituents = {Id : int ; Date:DateTime; Constituents: string seq; Index : string}
 type Tick = {Date:DateTime ; O:double;H:double;L:double;C:double;AC:double; V:double}
@@ -8,6 +9,9 @@ type Tick = {Date:DateTime ; O:double;H:double;L:double;C:double;AC:double; V:do
 
 type Symbol = {Ticker:string; CompanyName:string; }
 type DateRange = {Start:DateTime; End:DateTime}
+    with
+        member my.SplitOutByYear() =
+            [my.Start.Year..my.End.Year] |> Seq.map(fun yr -> DateTime(yr,1,1)) 
 type Period = |Month|Week|Day|Hour|Minute
 type Order = Buy of double | Sell of double | AggregateOrder of Order * Order | NoOrder
                 with
@@ -35,5 +39,7 @@ type Order = Buy of double | Sell of double | AggregateOrder of Order * Order | 
                     else
                         "No Order"
 
+
+type BacktestResults = {Cashflows:Frame<DateTime,string>; ClosingPrices: Frame<DateTime,string>; Orders: Frame<DateTime,string>; Holdings:Frame<DateTime,string> }
 
                                         

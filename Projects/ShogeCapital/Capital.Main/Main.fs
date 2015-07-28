@@ -19,10 +19,10 @@ let getSnP500Symbols() =
     |> Seq.map(fun x -> {Ticker= x.Symbol; CompanyName =x.Name})
     |> Seq.toArray
 
-
-let getAllSymbols() =
-    freeBase.``Products and Services``.Business.``Stock exchanges``.Individuals100.NYSE.``Companies traded``
-    |> Seq.map(fun x -> {Ticker = x.``Ticker symbol``; CompanyName = x.Name; })
+//
+//let getAllSymbols() =
+//    freeBase.``Products and Services``.Business.``Stock exchanges``.Individuals100.NYSE.``Companies traded``
+//    |> Seq.map(fun x -> {Ticker = x.``Ticker symbol``; CompanyName = x.Name; })
 
 
 
